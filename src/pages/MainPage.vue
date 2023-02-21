@@ -2,9 +2,11 @@
   <div class="header" :style="{background: headerColor, boxShadow: headerShadowValue}">
     <div class="container">
       <div class="header__inner">
-        <p class="header__logo">Meach</p>
-        <div class="header__hamburger">
-          <v-icon icon="mdi-menu"></v-icon>
+        <div class="header__menu">
+          <p class="header__logo">Meach</p>
+          <div class="header__hamburger">
+            <v-icon size="35px" icon="mdi-menu" @click="openMenu"></v-icon>
+          </div>
         </div>
         <div class="header__links">
           <a class="header__link">Вход</a>
@@ -67,9 +69,17 @@ export default {
         this.headerColor = '#fff0'
         this.headerShadowValue = null
       } else {
-        this.headerColor = 'rgba(250,251,255,0.86)'
+        this.headerColor = 'rgba(250,251,255,0.96)'
         this.headerShadowValue = '0px 4px 8px 0px rgba(34, 60, 80, 0.2)';
       }
+    },
+    openMenu(){
+      const headerLinks = document.querySelector(".header__links")
+      const headerInner = document.querySelector(".header__inner")
+      const header = document.querySelector(".header")
+      headerInner.classList.toggle("active")
+      headerLinks.classList.toggle("active")
+      header.classList.toggle("active")
     }
   },
 }

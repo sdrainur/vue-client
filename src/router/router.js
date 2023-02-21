@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
 
     const publicPages = [
         '/',
-        'main'
+        '/main'
     ]
     const authRequired = !publicPages.includes(to.path)
     const loggedIn = authenticationStore.isLoggedIn
