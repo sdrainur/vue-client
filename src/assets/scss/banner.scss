@@ -1,0 +1,38 @@
+@import "variables";
+
+@mixin flexible {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.background {
+  background: url("/src/assets/images/white_wall_hash.png");
+  width: 100vw;
+  height: 100vh;
+}
+
+.banner {
+  @include flexible;
+  height: $banner-height;
+}
+
+
+.banner__inner {
+  padding: 10px;
+  max-width: 500px;
+}
+
+.banner__title {
+  font-family: $font-family-title;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.banner__text {
+  padding: 5px;
+  font-family: $font-family-text;
+  font-size: 20px;
+  font-weight: 500;
+  color: $font-color-text
+}

@@ -1,0 +1,82 @@
+<template>
+  <div class="header" :style="{background: headerColor, boxShadow: headerShadowValue}">
+    <div class="container">
+      <div class="header__inner">
+        <p class="header__logo">Meach</p>
+        <div class="header__hamburger">
+          <v-icon icon="mdi-menu"></v-icon>
+        </div>
+        <div class="header__links">
+          <a class="header__link">Вход</a>
+          <a class="header__link">Регистрация</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="background">
+    <div class="container">
+      <div class="banner">
+        <div class="banner__inner">
+          <div class="banner__title">
+            We design and develop
+          </div>
+          <div class="banner__text">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos ipsam, nesciunt nisi possimus quibusdam quos
+            recusandae?
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="about">
+    <div class="container">
+      <div class="about__inner">
+        <div class="about__content">
+          <div class="about__title">
+            About Us
+          </div>
+          <div class="about__text">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus ad aut cumque debitis delectus eaque
+            eius error eveniet hic in, iste nam natus optio porro quidem tenetur vel voluptate.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: "MainPage",
+  data() {
+    return {
+      headerColor: null,
+      headerShadowValue: null
+    }
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  methods: {
+    handleScroll() {
+      console.log(window.scrollY)
+      if (window.pageYOffset === 0) {
+        this.headerColor = '#fff0'
+        this.headerShadowValue = null
+      } else {
+        this.headerColor = 'rgba(250,251,255,0.86)'
+        this.headerShadowValue = '0px 4px 8px 0px rgba(34, 60, 80, 0.2)';
+      }
+    }
+  },
+}
+</script>
+
+<style lang="scss">
+@import "../assets/scss/header";
+@import "../assets/scss/banner";
+@import "../assets/scss/about";
+</style>

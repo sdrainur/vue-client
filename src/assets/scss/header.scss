@@ -1,0 +1,90 @@
+@import "variables";
+
+@mixin flexible {
+  display: flex;
+}
+
+@mixin font__header {
+  font-family: $font-family-title;
+  font-weight: 500;
+}
+
+.container {
+  width: 100%;
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.header__hamburger{
+  display: none;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  transition: 400ms;
+}
+
+
+.header__inner {
+  @include flexible;
+  @include font__header;
+  height: $header-height;
+  text-transform: uppercase;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header {
+
+}
+
+.header__logo {
+  font-size: 25px;
+
+  &:hover {
+    cursor: default;
+  }
+}
+
+.header__links {
+  font-size: 17px;
+}
+
+
+.header__link {
+  margin: 0 20px;
+  transition: 100ms;
+
+  &:hover {
+    color: #7f7fc4;
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .header__inner{
+    height: 150px;
+    flex-direction: column;
+  }
+
+  .header__logo{
+    width: 100%;
+    padding: 10px;
+  }
+
+  .header__hamburger{
+    display: block;
+  }
+
+  .header__links{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header__link{
+    text-align: center;
+    margin: 10px 0;
+  }
+}
