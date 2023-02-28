@@ -94,7 +94,7 @@ export default {
       this.authenticationStore.logout()
     }
   },
-  mounted() {
+  beforeMount() {
     axiosInstance.get('/user').then(res => {
       this.user = res.data
     })

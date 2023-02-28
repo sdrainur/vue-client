@@ -43,7 +43,7 @@
               variant="text"
               @click="buyLesson"
           >
-            Записаться
+            Купить занятие
           </v-btn>
         </v-card-actions>
       </v-card>

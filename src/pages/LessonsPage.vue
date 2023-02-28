@@ -1,25 +1,23 @@
 <template>
-  <app-bar></app-bar>
+  <app-bar/>
   <v-main>
     <div class="container">
       <app-navigation></app-navigation>
       <div style="width: 100%;">
         <div class="content">
-          <div class="d-flex flex-column align-center">
-            <v-btn-toggle
-                v-model="choice"
-                color="primary"
-                style="border-radius: 20px;"
-            >
-              <v-btn variant="outlined" value="mentors" @click="getUsers">Менторы</v-btn>
-              <v-btn variant="outlined" value="users" @click="getUsers">Пользователи</v-btn>
-            </v-btn-toggle>
-          </div>
+          <!--          <div class="d-flex flex-column align-center">-->
+          <!--            <v-btn-toggle-->
+          <!--                v-model="choice"-->
+          <!--                color="primary"-->
+          <!--                style="border-radius: 20px;"-->
+          <!--            >-->
+          <!--              <v-btn variant="outlined" value="mentors" @click="getUsers">Менторы</v-btn>-->
+          <!--              <v-btn variant="outlined" value="users" @click="getUsers">Пользователи</v-btn>-->
+          <!--            </v-btn-toggle>-->
+          <!--          </div>-->
           <v-card
               class="content__header shadow btn"
-              v-for="user in users"
-              v-bind:key="user"
-              @click="$router.push('/user/'+user.id)"
+
           >
             <v-card-item>
               <v-avatar size="70px">
@@ -29,43 +27,30 @@
               </v-avatar>
             </v-card-item>
             <div class="user__info" style="padding: 0 15px">
-              <v-card-text class="user__name">{{ user.firstName + ' ' + user.secondName }}</v-card-text>
+              <v-card-text class="user__name">fmewokmew</v-card-text>
             </div>
           </v-card>
         </div>
       </div>
     </div>
   </v-main>
-</template>
 
+</template>
 
 <script>
 import AppBar from "@/components/AppBar";
 import AppNavigation from "@/components/AppNavigation";
-import {loadUsers} from "@/service/usersList.service";
 
 export default {
-  name: "UsersListPage",
+  name: "LessonsPage",
   components: {AppNavigation, AppBar},
   data() {
     return {
-      users: null,
-      choice: 'mentors'
+      lessons: null
     }
   },
-  beforeMount() {
-    loadUsers(this.choice)
-        .then(response => {
-          this.users = response.data
-        })
-  },
-  methods:{
-    getUsers(){
-      loadUsers(this.choice)
-          .then(response => {
-            this.users = response.data
-          })
-    }
+  mounted() {
+
   }
 }
 </script>
@@ -91,7 +76,6 @@ export default {
 .choose__button {
   transition: 100ms;
 }
-
 
 
 .content {

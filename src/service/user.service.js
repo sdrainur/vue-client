@@ -5,8 +5,11 @@ export function logIn(email, password) {
         'email': email,
         'password': password
     }).then(response => {
-        if(response){
-            localStorage.setItem("accessToken", JSON.stringify(response.data))
+        if (response) {
+            console.log(response.data.accessToken)
+            localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken))
+            localStorage.setItem("userId", JSON.stringify(response.data.id))
+            localStorage.setItem("userRole", JSON.stringify(response.data.role))
         }
         return response.data
     })

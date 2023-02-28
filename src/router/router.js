@@ -1,16 +1,18 @@
 import {createRouter, createWebHistory} from "vue-router/dist/vue-router";
 import userPage from "@/pages/UserPage";
-import helloPage from "@/pages/HelloPage";
 import {useAuthenticationStore} from "@/store/authentication.store";
 import usersListPage from "@/pages/UsersListPage";
 import mainPage from "@/pages/MainPage";
+import lessonsPage from "@/pages/LessonsPage";
+import chatPage from "@/pages/ChatPage";
 
 const routes = [
-    {path: '/', component: helloPage},
+    {path: '/', component: mainPage},
     {path: '/user/', component: userPage},
     {path: '/user/:id', component: userPage},
     {path: '/users', component: usersListPage},
-    {path: '/main', component: mainPage}
+    {path: '/lessons', component: lessonsPage},
+    {path: '/messages', component: chatPage},
 ]
 
 const router = createRouter({
@@ -22,8 +24,7 @@ router.beforeEach((to, from, next) => {
     const authenticationStore = useAuthenticationStore()
 
     const publicPages = [
-        '/',
-        '/main'
+        '/'
     ]
     const authRequired = !publicPages.includes(to.path)
     const loggedIn = authenticationStore.isLoggedIn

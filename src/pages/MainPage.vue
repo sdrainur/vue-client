@@ -9,8 +9,38 @@
           </div>
         </div>
         <div class="header__links">
-          <a class="header__link">Вход</a>
-          <a class="header__link">Регистрация</a>
+          <v-dialog
+              v-model="loginForm"
+              parent
+          >
+            <template v-slot:activator="{ props }">
+              <a
+                  v-bind="props"
+                  class="header__link"
+              >
+                Авторизоваться
+              </a>
+            </template>
+            <v-container style="width: 350px;">
+              <login-form></login-form>
+            </v-container>
+          </v-dialog>
+          <v-dialog
+              v-model="signUpForm"
+              parent
+          >
+            <template v-slot:activator="{ props }">
+              <a
+                  class="header__link"
+                  v-bind="props"
+              >
+                Регистрация
+              </a>
+            </template>
+            <v-container style="height: 100vh">
+              <registration-form></registration-form>
+            </v-container>
+          </v-dialog>
         </div>
       </div>
     </div>
@@ -51,10 +81,18 @@
 </template>
 
 <script>
+import LoginForm from "@/components/LoginForm";
+import RegistrationForm from "@/components/SignUpForm";
 export default {
   name: "MainPage",
+  components:{
+    RegistrationForm,
+    LoginForm
+  },
   data() {
     return {
+      loginForm: false,
+      signUpForm: false,
       headerColor: null,
       headerShadowValue: null
     }

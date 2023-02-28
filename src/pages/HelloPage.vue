@@ -55,6 +55,8 @@
 <script>
 import LoginForm from "@/components/LoginForm";
 import RegistrationForm from "@/components/SignUpForm";
+
+
 export default {
   name: "hello-vuetify",
   components: {RegistrationForm, LoginForm},

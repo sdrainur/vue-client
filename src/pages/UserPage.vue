@@ -27,7 +27,7 @@
             </div>
           </v-card>
           <v-card class="content__header shadow">
-            <LessonPurchase :mentor="user" :lessons-plan="lessonsPlan"></LessonPurchase>
+            <LessonPurchase v-if="user.role==='MENTOR'" :mentor="user" :lessons-plan="lessonsPlan"></LessonPurchase>
             <!--            <v-dialog-->
             <!--                v-model="newPost"-->
             <!--                persistent-->
@@ -113,7 +113,7 @@ export default {
       lessonsPlan: null
     }
   },
-  mounted() {
+  beforeMount() {
     axiosInstance.get(this.$route.path).then(res => {
       this.user = res.data
       loadPlan(this.user.role, this.user.id).then(result => {

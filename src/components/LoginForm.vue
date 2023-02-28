@@ -1,13 +1,12 @@
 <template>
-  <v-card style="max-width: 25vw">
-    <v-card-text style="max-width: 25vw" class="ma-0">
-      <v-container style="max-width: 25vw" class="ma-0">
-        <v-row align="center" justify="center" style="max-width: 25vw" class="ma-0">
-          <h1 class="custom-font">Вход в аккаунт</h1>
+  <v-card>
+    <v-card-text class="ma-0">
+      <v-container class="ma-0">
+        <v-row align="center" justify="center" class="ma-0">
+          <h1 class="custom-font" style="margin-bottom: 10px">Вход в аккаунт</h1>
         </v-row>
         <v-row align="center"
                justify="center"
-               style="max-width: 50vw"
                class="ma-0">
           <v-form
               ref="form"
@@ -88,7 +87,7 @@ export default {
     signIn() {
       if (this.email && this.password) {
         this.authenticationStore.login(this.email, this.password)
-            .then(()=>{
+            .then(() => {
               router.push('/user')
             })
       }

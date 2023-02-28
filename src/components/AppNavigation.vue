@@ -19,7 +19,16 @@
     <v-btn
         variant="text"
         class="button"
+        prepend-icon="mdi-school-outline"
+        @click="$router.push('/lessons')"
+    >
+      Обучение
+    </v-btn>
+    <v-btn
+        variant="text"
+        class="button"
         prepend-icon="mdi-chat-outline"
+        @click="$router.push('/messages')"
     >
       Сообщения
     </v-btn>
@@ -38,6 +47,7 @@ export default {
   flex-direction: column;
   max-width: 250px;
 }
+
 .button {
   max-width: 200px;
   margin: 5px 0;
