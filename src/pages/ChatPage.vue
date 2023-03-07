@@ -7,40 +7,50 @@
         <div class="dialogs shadow">
           <div class="search">
             <div class="search__inner">
-              <v-icon icon="mdi-arrow-left" @click="closeMessages" v-if="openedMessages"/>
+              <v-icon icon="mdi-arrow-left" @click="closeMessages" v-if="openedUser"/>
               <input class="search__field" placeholder="Поиск...">
               <v-icon icon="mdi-magnify"/>
             </div>
           </div>
-          <div class="dialogs__list" v-if="!openedMessages">
-            <div v-for="i in new Array(20)" v-bind:key="i">
-              <div class="user" @click="openMessages">
+          <!--          <div style="height:100%; display: flex; justify-content: center; align-items: center">-->
+          <!--            <p class="dialogs__info" >Нет доступных диалогов</p>-->
+          <!--          </div>-->
+          <div class="dialogs__list" v-if="!openedUser">
+            <div v-for="user in users" v-bind:key="user">
+              <div class="user" @click="openMessages(user)">
                 <v-avatar size="50px" style="margin: 0 5px">
                   <v-img
                       :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"/>
                 </v-avatar>
-                Иван Иванов
+                {{ user.firstName + ' ' + user.secondName }}
               </div>
               <v-divider/>
             </div>
           </div>
-          <div class="messages" v-if="openedMessages">
-            <div class="messages__list">
-              <div class="message__received">
-                <div class="message__received__inner">
-                  Привет
+          <div class="messages" v-if="openedUser">
+            <div id="messages__list" class="messages__list">
+              <div v-for="message in messages" v-bind:key="message">
+                <div class="message__received" v-if="this.authUserId != message.sender">
+                  <div class="message__received__inner">
+                    {{ message.textOrFilePath }}
+                  </div>
                 </div>
-              </div>
-              <div class="message__sent">
-                <div class="message__sent__inner">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis cumque dicta distinctio
-                  dolores eaque fuga hic labore nam nesciunt, perferendis porro quas saepe sint tempora tempore, vitae.
-                  Obcaecati, sapiente.
+                <div class="message__sent" v-if="this.authUserId == message.sender">
+                  <div class="message__sent__inner">
+                    {{ message.textOrFilePath }}
+                  </div>
                 </div>
               </div>
             </div>
             <div class="message__input">
-              <input placeholder="Введите сообщение">
+              <input
+                  class="message__input__field"
+                  placeholder="Введите сообщение"
+                  :value="newMessageText"
+                  @input="newMessageText=$event.target.value"
+                  @submit.prevent="sendMessage"
+                  @keyup.enter="sendMessage">
+              <v-icon size="30px" icon="mdi-send-circle-outline" @click="sendMessage"/>
             </div>
           </div>
         </div>
@@ -52,7 +62,11 @@
 <script>
 import AppBar from "@/components/AppBar";
 import AppNavigation from "@/components/AppNavigation";
-import {loadChatRooms} from "@/service/chat.service";
+import {io} from "socket.io-client";
+import {loadRelatedUsers} from "@/service/user.service";
+import {authToken} from "@/service/auth.service";
+import {loadMessages} from "@/service/chat.service";
+import {useAuthenticationStore} from "@/store/authentication.store";
 
 
 export default {
@@ -60,20 +74,82 @@ export default {
   components: {AppNavigation, AppBar},
   data() {
     return {
-      openedMessages: false
+      openedUser: null,
+      users: null,
+      messages: null,
+      authUserId: null,
+      newMessageText: null
     }
   },
   setup() {
+
+    const authenticationStore = useAuthenticationStore()
+
+    const token = authToken
+    const socket = io("http://localhost:4000/", {
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            'Authorization': 'Bearer ' + token
+          }
+        }
+      },
+      query: {
+        userId: authenticationStore.getUserId
+      }
+    })
+    return {
+      socket,
+      authenticationStore
+    }
   },
   beforeMount() {
-    loadChatRooms()
+    console.log('connected')
+    this.authUserId = this.authenticationStore.userId
+    this.socket.emit('join', {
+      userId: this.authUserId
+    })
+    this.$watch('messages', function () {
+      this.$nextTick(() => {
+        let objDiv = document.getElementById("messages__list");
+        console.log(objDiv.scrollHeight);
+        objDiv.scrollTop = objDiv.scrollHeight;
+      });
+    }, {deep: true})
+    loadRelatedUsers().then(result => {
+      this.users = result.data
+    })
+  },
+  unmounted() {
+    this.socket.emit('leave', {
+      userId: this.authUserId
+    })
   },
   methods: {
-    openMessages() {
-      this.openedMessages = true;
+    sendMessage() {
+      this.socket.emit('chat', {
+        data: {
+          uuid: this.openedUser.uuid,
+          text: this.newMessageText,
+        },
+        to: this.openedUser.id,
+        from: this.authUserId
+      })
+      this.newMessageText = null
+    },
+    openMessages(user) {
+      loadMessages(user.uuid).then(result => {
+        this.messages = result.data
+        this.openedUser = user
+        this.socket.on('chat', (data) => {
+          console.log(data.message)
+          this.messages.push(data.message)
+        })
+      })
     },
     closeMessages() {
-      this.openedMessages = false;
+      this.openedUser = null;
+      this.messages = null
     }
   }
 }
@@ -111,6 +187,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  overflow-x: hidden;
   padding: 10px;
   height: calc(100% - 25px);
 }
@@ -160,6 +237,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: calc(100% - 55px);
+  overflow-y: scroll;
 }
 
 .message__input {
@@ -167,14 +245,24 @@ export default {
   margin: 10px 15px;
 }
 
+.message__input__field {
+  width: calc(100% - 30px);
+
+  &:focus {
+    outline: none;
+  }
+}
+
 .message__sent {
   display: flex;
   justify-content: end;
+  margin: 10px;
 }
 
 .message__received {
   display: flex;
   justify-content: start;
+  margin: 10px;
 }
 
 
@@ -199,5 +287,13 @@ export default {
   10px -10px 19px #ffffff;
 }
 
+.dialogs__info {
+  font-size: 20px;
+  color: #6d6d6d;
+
+  &:hover {
+    cursor: default;
+  }
+}
 
 </style>

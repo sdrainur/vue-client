@@ -1,5 +1,6 @@
 import axiosInstance from "@/service/axios.instance";
 
-export const loadChatRooms = (userId) => {
-    return axiosInstance.get('/chat-list/' + userId)
+export const loadMessages = (uuid) => {
+    return axiosInstance.get('/messages/' + uuid)
 }
+

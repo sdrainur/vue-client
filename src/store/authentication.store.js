@@ -24,7 +24,8 @@ export const useAuthenticationStore = defineStore('authentication', {
     state: () => (initialState),
     getters: {
         getAccessToken: (state) => state.token,
-        isLoggedIn: (state) => state.loggedIn
+        isLoggedIn: (state) => state.loggedIn,
+        getUserId: (state) => state.userId
     },
     actions: {
         login(email, password) {
@@ -39,6 +40,8 @@ export const useAuthenticationStore = defineStore('authentication', {
         },
         logout() {
             localStorage.removeItem('accessToken')
+            localStorage.removeItem('userId')
+            localStorage.removeItem('userRole')
             router.push('/')
         }
     }

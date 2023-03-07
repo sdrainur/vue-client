@@ -15,21 +15,23 @@
           <!--              <v-btn variant="outlined" value="users" @click="getUsers">Пользователи</v-btn>-->
           <!--            </v-btn-toggle>-->
           <!--          </div>-->
-          <v-card
-              class="content__header shadow btn"
+          <div v-for="user in users" v-bind:key="user">
+            <v-card
+                class="content__header shadow btn"
 
-          >
-            <v-card-item>
-              <v-avatar size="70px">
-                <v-img
-                    :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"
-                ></v-img>
-              </v-avatar>
-            </v-card-item>
-            <div class="user__info" style="padding: 0 15px">
-              <v-card-text class="user__name">fmewokmew</v-card-text>
-            </div>
-          </v-card>
+            >
+              <v-card-item>
+                <v-avatar size="70px">
+                  <v-img
+                      :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"
+                  ></v-img>
+                </v-avatar>
+              </v-card-item>
+              <div class="user__info" style="padding: 0 15px">
+                <v-card-text class="user__name">{{ user.firstName + ' ' + user.secondName }}</v-card-text>
+              </div>
+            </v-card>
+          </div>
         </div>
       </div>
     </div>
@@ -40,17 +42,20 @@
 <script>
 import AppBar from "@/components/AppBar";
 import AppNavigation from "@/components/AppNavigation";
+import {loadRelatedUsers} from "@/service/user.service";
 
 export default {
   name: "LessonsPage",
   components: {AppNavigation, AppBar},
   data() {
     return {
-      lessons: null
+      users: null
     }
   },
-  mounted() {
-
+  beforeMount() {
+    loadRelatedUsers().then(result => {
+      this.users = result.data
+    })
   }
 }
 </script>

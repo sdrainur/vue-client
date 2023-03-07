@@ -1,6 +1,7 @@
 import axios from "axios";
+import axiosInstance from "@/service/axios.instance";
 
-export function logIn(email, password) {
+export const logIn = (email, password) => {
     return axios.post('http://localhost:4000/login', {
         'email': email,
         'password': password
@@ -13,4 +14,8 @@ export function logIn(email, password) {
         }
         return response.data
     })
+}
+
+export const loadRelatedUsers = () => {
+    return axiosInstance.get('/related-users-list')
 }
