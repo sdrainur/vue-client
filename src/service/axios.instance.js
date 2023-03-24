@@ -6,7 +6,7 @@ const token = authToken
 
 const axiosInstance = token ?
     axios.create({
-        baseURL: 'http://localhost:4000',
+        baseURL: 'http://192.168.1.8:4000',
         timeout: 8000,
         headers: {
             'Content-Type': 'application/json',
@@ -14,7 +14,7 @@ const axiosInstance = token ?
         },
     }) :
     axios.create({
-        baseURL: 'http://localhost:4000',
+        baseURL: 'http://192.168.1.8:4000',
         timeout: 8000,
         headers: {
             'Content-Type': 'application/json',

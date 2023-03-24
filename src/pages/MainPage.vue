@@ -83,9 +83,10 @@
 <script>
 import LoginForm from "@/components/LoginForm";
 import RegistrationForm from "@/components/SignUpForm";
+
 export default {
   name: "MainPage",
-  components:{
+  components: {
     RegistrationForm,
     LoginForm
   },
@@ -111,7 +112,7 @@ export default {
         this.headerShadowValue = '0px 4px 8px 0px rgba(34, 60, 80, 0.2)';
       }
     },
-    openMenu(){
+    openMenu() {
       const headerLinks = document.querySelector(".header__links")
       const headerInner = document.querySelector(".header__inner")
       const header = document.querySelector(".header")

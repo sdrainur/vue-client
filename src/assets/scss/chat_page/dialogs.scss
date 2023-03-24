@@ -1,0 +1,128 @@
+@import "src/assets/scss/variables";
+
+$message-width: 300px;
+
+.dialogs {
+  font-family: $font-family-text;
+  margin: 0 10px;
+  padding: 5px;
+  border-radius: $border-radius;
+  width: 70%;
+  height: 80vh;
+}
+
+.dialogs__list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10px;
+  height: calc(100% - 25px);
+}
+
+.user {
+  padding: 20px 30px;
+  font-size: 20px;
+  transition: 100ms;
+
+  &:hover {
+    cursor: pointer;
+    scale: 1.05;
+  }
+}
+
+.search {
+  width: auto;
+  height: 20px;
+  margin: 5px 20px;
+}
+
+.search__inner {
+  display: flex;
+  margin: 0 20px;
+}
+
+.search__field {
+  width: 100%;
+  margin: 0 10px;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+
+  }
+}
+
+.messages {
+  margin: 10px 20px;
+  padding: 10px;
+  height: calc(100% - 25px);
+}
+
+.messages__list {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 55px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.message__input {
+  height: 20px;
+  margin: 10px 15px;
+}
+
+.message__input__field {
+  width: calc(100% - 30px);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.message__sent {
+  display: flex;
+  justify-content: end;
+  margin: 10px;
+}
+
+.message__received {
+  display: flex;
+  justify-content: start;
+  margin: 10px;
+}
+
+
+.message__received__inner {
+  padding: 5px;
+  max-width: $message-width;
+  border-radius: 20px;
+  background: #fff5f5;
+  box-shadow: 10px 10px 19px #ebebeb,
+  -10px -10px 19px #ffffff;
+
+}
+
+.message__sent__inner {
+  border-radius: 20px;
+  max-width: $message-width;
+  padding: 15px;
+  background: #f5fff7;
+  box-shadow: -10px 10px 19px #ebebeb,
+  10px -10px 19px #ffffff;
+}
+
+.message__text {
+  word-break: break-all;
+}
+
+.dialogs__info {
+  font-size: 20px;
+  color: #6d6d6d;
+
+  &:hover {
+    cursor: default;
+  }
+}

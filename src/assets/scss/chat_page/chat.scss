@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 15px 0 0 0;
+}
+
+.chat {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}

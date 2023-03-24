@@ -1,0 +1,30 @@
+@import "src/assets/scss/variables";
+
+.chat__menu {
+  font-family: $font-family-text;
+  margin: 0 10px;
+  padding: 5px;
+  border-radius: $border-radius;
+  width: 30%;
+  height: 250px;
+  max-height: 80vh;
+}
+
+.menu__inner {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.user__info {
+  display: flex;
+  flex-direction: column;
+  font-family: $font-family-title;
+  margin: 10px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.avatar{
+  margin: 0 auto;
+}
