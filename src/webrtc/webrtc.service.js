@@ -1,114 +1,8 @@
-// import freeice from "freeice";
-//
-// export let peerConnection = null;
-// export let remotePeerConnection;
-// export let localMediaStream = null;
-// export const myMediaElement = null;
-// export const remoteMediaElement = null;
-//
-// export async function createNewPeer(socket, createOffer, senderId, openedUserId) {
-//     if (peerConnection === null) {
-//         peerConnection = new RTCPeerConnection({
-//             iceServers: freeice()
-//         })
-//         peerConnection.onicecandidate = event => {
-//             if (event.candidate) {
-//                 socket.emit('relay_ice', {
-//                     to: openedUserId,
-//                     from: senderId,
-//                     ice: event.candidate
-//                 })
-//             }
-//         }
-//
-//         // let tracks = 0;
-//         peerConnection.ontrack = ({streams: [remoteStream]}) => {
-//             // tracks++;
-//             // if (tracks === 2) {
-//             // tracks = 0;
-//             const video = document.getElementById('remoteVideo');
-//             video.srcObject = remoteStream;
-//             video.onloadedmetadata = () => {
-//                 video.play();
-//             };
-//             // }
-//         }
-//         localMediaStream.getTracks().forEach(track => {
-//             peerConnection.addTrack(track)
-//         })
-//     }
-//
-//     if (createOffer) {
-//         const offer = await peerConnection.createOffer();
-//
-//         await peerConnection.setLocalDescription(offer);
-//
-//         socket.emit('relay_sdp', {
-//             to: openedUserId,
-//             from: senderId,
-//             sdp: offer
-//         })
-//     }
-// }
-//
-// export async function createCall() {
-//     localMediaStream = await navigator.mediaDevices.getUserMedia({
-//         audio: true,
-//         video: true
-//     })
-//     const video = document.getElementById('video');
-//     video.srcObject = localMediaStream;
-//     video.onloadedmetadata = () => {
-//         video.play();
-//     };
-// }
-//
-// export async function setRemoteMedia(socket, remoteDescription, senderId, openedUserId) {
-//
-//     await peerConnection.setRemoteDescription(
-//         new RTCSessionDescription(remoteDescription)
-//     );
-//
-//     if (remoteDescription.type === 'offer') {
-//         const answer = await peerConnection.createAnswer();
-//
-//         await peerConnection.setLocalDescription(answer);
-//
-//         socket.emit('relay_sdp', {
-//             to: openedUserId,
-//             from: senderId,
-//             sdp: answer
-//         })
-//     }
-// }
-//
-// // export function listenRtcSocket(socket, senderId, openedUserId) {
-// //     socket.on('session_description', ({data}) => {
-// //         createCall().then(() =>
-// //             createOffer(socket, false, senderId, openedUserId).then(() =>
-// //
-// //                 setRemoteMedia(socket, data, senderId, openedUserId)
-// //             )
-// //         )
-// //     })
-// //     socket.on('ice_candidate', ({iceCandidate}) => {
-// //         peerConnection.addIceCandidate(
-// //             new RTCIceCandidate(iceCandidate)
-// //         )
-// //     })
-// //     // socket.on('session_description', (data)=>{
-// //     //     console.log(data)
-// //     // })
-// //     // socket.on('ice_candidate', (data)=>{
-// //     //     console.log(data)
-// //     // })
-// // }
-
-
 import freeice from "freeice";
 
 export let peerConnection;
 export let localMediaStream;
+export let remoteMediaStream;
 export let socket;
 export let loggedUserId;
 export let openedUserId;
@@ -126,6 +20,19 @@ export const setLocalMediaStream = async () => {
     localMediaStream.getTracks().forEach(track => {
         peerConnection.addTrack(track, localMediaStream)
     })
+}
+
+export const getVideoSize = () => {
+    return{
+        localVideo:{
+            width: localMediaStream.getVideoTracks()[0].getSettings().width,
+            height: localMediaStream.getVideoTracks()[0].getSettings().height
+        },
+        remoteVideo:{
+            width: remoteMediaStream.getVideoTracks()[0].getSettings().width,
+            height: remoteMediaStream.getVideoTracks()[0].getSettings().height
+        }
+    }
 }
 
 export const createPeer = async (_socket, _loggedUserId, _openedUserId) => {
@@ -149,6 +56,7 @@ export const createPeer = async (_socket, _loggedUserId, _openedUserId) => {
     }
     peerConnection.ontrack = ({streams: [remoteStream]}) => {
         const video = document.getElementById('remoteVideo');
+        remoteMediaStream = remoteStream
         video.srcObject = remoteStream;
         video.onloadedmetadata = () => {
             video.play();

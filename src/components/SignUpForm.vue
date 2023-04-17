@@ -108,7 +108,8 @@
 
 <script>
 import {useToast} from "vue-toastification";
-import axios from "axios";
+import axiosInstance from "@/service/axios.instance";
+
 export default {
   name: "registration-form",
   data() {
@@ -174,8 +175,8 @@ export default {
   methods: {
     signUp() {
       if (this.confirmPassword === this.user.password) {
-        axios
-            .post('http://localhost:4000/signup', {
+        axiosInstance
+            .post('/signup', {
               email: this.user.email,
               password: this.user.password,
               firstName: this.user.firstName,

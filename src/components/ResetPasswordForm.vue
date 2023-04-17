@@ -79,8 +79,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import {useToast} from "vue-toastification";
+import axiosInstance from "@/service/axios.instance";
+
 export default {
   name: "ResetPasswordForm",
   data() {
@@ -98,15 +99,15 @@ export default {
   },
   methods: {
     sendMessage() {
-      axios
-          .post("http://localhost:9000/signup/reset-password", {
+      axiosInstance
+          .post("/signup/reset-password", {
             mail: this.mail
           })
     },
     setNewPassword() {
       if (this.password === this.confirmPassword) {
-        axios
-            .post("http://localhost:9000/signup/set-password", {
+        axiosInstance
+            .post("/signup/set-password", {
               activationCode: this.activationCode,
               password: this.password
             })

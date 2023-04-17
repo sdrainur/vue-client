@@ -151,7 +151,6 @@ export default {
       this.newMessageText = ''
     },
     openMessages(user) {
-      alert('opening')
       loadMessages(user.uuid).then(result => {
         this.messages = result.data
         this.openedUser = user

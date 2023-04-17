@@ -1,0 +1,54 @@
+@import "../variables.scss";
+
+.call__item {
+  background: $background-color-light;
+}
+
+.call__videos {
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20vw;
+  height: 20vh;
+  z-index: 100;
+}
+
+.video__remote {
+  background: red;
+}
+
+.avatar {
+  margin: 0 auto;
+}
+
+.call__title__container {
+  display: flex;
+  margin: 15px 10px;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.call__actions {
+  display: flex;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.call__button {
+  margin: 5px;
+}
+
+.font__name {
+  font-family: $font-family-title;
+  font-size: 25px;
+  text-align: center;
+}
+
+.font_information {
+  font-family: $font-family-text;
+  font-size: 15px;
+  text-align: center;
+}

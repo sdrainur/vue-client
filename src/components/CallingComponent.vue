@@ -1,156 +1,137 @@
-<!--<template>-->
-<!--  <div class="text-center">-->
-<!--    <v-dialog-->
-<!--        v-model="dialog"-->
-<!--        width="auto"-->
-<!--    >-->
-<!--      <template v-slot:activator="{ props }">-->
-<!--        <v-btn-->
-<!--            variant="text"-->
-<!--            v-bind="props"-->
-<!--            @click="inviteCall"-->
-<!--        >-->
-<!--          Аудиозвонок-->
-<!--        </v-btn>-->
-<!--      </template>-->
-
-<!--      <v-card>-->
-
-<!--        <video autoplay-->
-<!--               playsinline-->
-<!--               id="video"-->
-<!--               :height="300"-->
-<!--               :width="400">-->
-
-<!--        </video>-->
-<!--        <video autoplay-->
-<!--               playsinline-->
-<!--               id="remoteVideo"-->
-<!--               :height="300"-->
-<!--               :width="400">-->
-
-<!--        </video>-->
-<!--        <v-card-actions>-->
-<!--          <v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>-->
-<!--        </v-card-actions>-->
-<!--      </v-card>-->
-<!--    </v-dialog>-->
-<!--  </div>-->
-<!--</template>-->
-
-<!--<script>-->
-
-<!--import {createCall, createNewPeer, peerConnection, setRemoteMedia} from "@/webrtc/webrtc.service";-->
-
-<!--export default {-->
-<!--  name: "CallingComponent",-->
-<!--  props: [-->
-<!--    'authUserId',-->
-<!--    'senderId',-->
-<!--    'socket',-->
-<!--    'openedUser'-->
-<!--  ],-->
-<!--  data() {-->
-<!--    return {-->
-<!--      dialog: false,-->
-<!--      myPeerConnection: null,-->
-<!--      targetPeerConnection: null,-->
-<!--    }-->
-<!--  },-->
-<!--  beforeMount() {-->
-<!--    // listenRtcSocket(this.socket)-->
-<!--    this.socket.on('session_description', async (data) => {-->
-<!--      this.dialog = true-->
-<!--      createCall().then(() =>-->
-<!--          createNewPeer(this.socket, false, this.senderId, this.openedUser.id).then(async () => {-->
-<!--                await setRemoteMedia(this.socket, data, this.senderId, this.openedUser.id)-->
-<!--              }-->
-<!--          )-->
-<!--      )-->
-<!--    })-->
-<!--    this.socket.on('ice_candidate', async (iceCandidate) => {-->
-<!--      this.dialog = true-->
-<!--      createNewPeer(this.socket, false, this.senderId, this.openedUser.id).then(() => {-->
-<!--            console.log(iceCandidate)-->
-<!--            peerConnection.addIceCandidate(-->
-<!--                new RTCIceCandidate(iceCandidate)-->
-<!--            )-->
-<!--          }-->
-<!--      )-->
-<!--    })-->
-<!--  },-->
-<!--  methods: {-->
-<!--    inviteCall() {-->
-<!--      //   console.log(this.authUserId)-->
-<!--      //   console.log(this.senderId)-->
-<!--      //   this.myPeerConnection = new RTCPeerConnection({-->
-<!--      //     iceServers: freeice(),-->
-<!--      //   })-->
-<!--      //   this.myPeerConnection.onicecandidate = event => {-->
-<!--      //     if(event.candidate){-->
-<!--      //-->
-<!--      //     }-->
-<!--      //   }-->
-<!--      createCall().then(() => createNewPeer(this.socket, true, this.authUserId, this.openedUser.id))-->
-<!--    },-->
-
-<!--    // openVideo() {-->
-<!--    // navigator.mediaDevices.getUserMedia({video: true})-->
-<!--    //     .then(stream => {-->
-<!--    //       const video = document.querySelector('video');-->
-<!--    //       video.srcObject = stream;-->
-<!--    //       video.onloadedmetadata = () => {-->
-<!--    //         video.play();-->
-<!--    //       };-->
-<!--    //     }).catch((err) => {-->
-<!--    //   console.error(`${err.name}: ${err.message}`);-->
-<!--    // });-->
-<!--    // createCall();-->
-<!--    // },-->
-<!--  }-->
-<!--}-->
-<!--</script>-->
-
-<!--<style scoped>-->
-
-<!--</style>-->
-
-
 <template>
   <div class="text-center">
     <v-dialog
-        v-model="dialog"
+        v-model="outcomingCall"
         width="auto"
     >
       <template v-slot:activator="{ props }">
         <v-btn
             variant="text"
             v-bind="props"
-            @click="inviteCall"
+            @click="call"
         >
           Аудиозвонок
         </v-btn>
       </template>
-
+      <v-card class="call__item" id="callItem">
+        <audio autoplay loop>
+          <source :src="require('/src/assets/sounds/outcoming_call.mp3')" type='audio/mpeg'>
+        </audio>
+        <v-card-title>
+          <div class="call__title__container">
+            <div class="avatar">
+              <v-avatar class="avatar__item" size="7vw">
+                <v-img
+                    :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"></v-img>
+              </v-avatar>
+            </div>
+            <p class="font__name">{{ this.openedUser.firstName + ' ' + this.openedUser.secondName }}</p>
+            <p class="font_information">Выполняется звонок...</p>
+          </div>
+        </v-card-title>
+        <v-card-actions class="call__actions">
+          <v-btn
+              variant="outlined"
+              icon
+              color="error"
+              class="call__button"
+          >
+            <v-icon>mdi-phone-hangup</v-icon>
+          </v-btn>
+          <v-btn
+              variant="outlined"
+              icon
+              color="secondary"
+              class="call__button"
+          >
+            <v-icon>mdi-microphone</v-icon>
+          </v-btn>
+          <v-btn
+              variant="outlined"
+              icon
+              color="secondary"
+              class="call__button"
+          >
+            <v-icon>mdi-video</v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+        v-model="this.incomingCall"
+        width="auto"
+    >
+      <v-card class="call__item" id="callItem">
+        <audio autoplay loop>
+          <source :src="require('/src/assets/sounds/outcoming_call.mp3')" type='audio/mpeg'>
+        </audio>
+        <v-card-title>
+          <div class="call__title__container">
+            <div class="avatar">
+              <v-avatar class="avatar__item" size="7vw">
+                <v-img
+                    :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"></v-img>
+              </v-avatar>
+            </div>
+            <p class="font__name">{{ this.openedUser.firstName + ' ' + this.openedUser.secondName }}</p>
+            <p class="font_information">Входящий звонок...</p>
+          </div>
+        </v-card-title>
+        <v-card-actions class="call__actions">
+          <v-btn
+              variant="outlined"
+              icon
+              color="error"
+              class="call__button"
+          >
+            <v-icon>mdi-phone-hangup</v-icon>
+          </v-btn>
+          <v-btn
+              variant="outlined"
+              icon
+              color="success"
+              class="call__button"
+              @click="acceptCall"
+          >
+            <v-icon>mdi-phone</v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+        v-model="connectedCall"
+        width="auto"
+    >
       <v-card>
-
-        <video autoplay
-               playsinline
-               id="video"
-               :height="300"
-               :width="400">
-
-        </video>
-        <video autoplay
-               playsinline
-               id="remoteVideo"
-               :height="300"
-               :width="400">
-
-        </video>
-        <v-card-actions>
-          <v-btn color="primary" @click="dialog = false">Close Dialog</v-btn>
-          <v-btn color="primary" @click="inviteCall">Позвонить</v-btn>
+        <div class="call__videos">
+          <video autoplay
+                 playsinline
+                 id="remoteVideo"
+                 class="video__remote">
+          </video>
+          <video autoplay
+                 playsinline
+                 id="video"
+                 class="video">
+          </video>
+        </div>
+        <v-card-actions class="call__actions">
+          <v-btn
+              variant="outlined"
+              icon
+              color="error"
+              class="call__button"
+          >
+            <v-icon>mdi-phone-hangup</v-icon>
+          </v-btn>
+          <v-btn
+              variant="outlined"
+              icon
+              color="success"
+              class="call__button"
+          >
+            <v-icon>mdi-phone</v-icon>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -172,9 +153,13 @@ export default {
   ],
   data() {
     return {
-      dialog: false,
+      outcomingCall: false,
       myPeerConnection: null,
       targetPeerConnection: null,
+      callItem: null,
+      audioItem: null,
+      incomingCall: false,
+      connectedCall: false
     }
   },
   beforeMount() {
@@ -184,6 +169,19 @@ export default {
     })
     listenRtcSocket(this.socket)
     createPeer(this.socket, this.authUserId, this.openedUser.id)
+    this.socket.on('call', (data) => {
+      console.log(data)
+      if (data.type === 'invite' && data.from === this.openedUser.id) {
+        this.incomingCall = true
+      }
+    })
+    this.socket.on('call', (data) => {
+      if (data.type === 'accept' && data.from === this.openedUser.id) {
+        this.outcomingCall = false
+        this.connectedCall = true
+        this.inviteCall()
+      }
+    })
   },
   methods: {
     async inviteCall() {
@@ -194,10 +192,28 @@ export default {
       await setLocalMediaStream();
       await createOffer();
     },
+    call() {
+      this.outcomingCall = true;
+      console.log('inviting')
+      this.socket.emit('call', {
+        from: this.authUserId,
+        to: this.openedUser.id,
+        type: 'invite'
+      })
+    },
+    acceptCall() {
+      this.incomingCall = false
+      this.connectedCall = true
+      this.socket.emit('call', {
+        from: this.authUserId,
+        to: this.openedUser.id,
+        type: 'accept'
+      })
+    }
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+@import "src/assets/scss/chat_page/calling_component.scss";
 </style>

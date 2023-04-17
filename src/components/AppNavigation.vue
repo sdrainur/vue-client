@@ -27,6 +27,14 @@
     <v-btn
         variant="text"
         class="button"
+        prepend-icon="mdi-calendar-month-outline"
+        @click="$router.push('/schedule')"
+    >
+      Расписание
+    </v-btn>
+    <v-btn
+        variant="text"
+        class="button"
         prepend-icon="mdi-chat-outline"
         @click="$router.push('/messages')"
     >

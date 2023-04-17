@@ -1,9 +1,8 @@
-import axios from "axios";
 import axiosInstance from "@/service/axios.instance";
 
 export const logIn = (email, password) => {
     console.log('loggining')
-    return axios.post('http://192.168.1.8:4000/login', {
+    return axiosInstance.post('/login', {
         'email': email,
         'password': password
     }).then(response => {
