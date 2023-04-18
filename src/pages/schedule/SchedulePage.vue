@@ -8,10 +8,43 @@
         <v-card class="card__schedule shadow">
           <VueScheduler
               :events="events"
-              @select-date="click"
+              @select-date="openDailySchedule"
               class="schedule"/>
         </v-card>
       </div>
+      <v-dialog
+          v-model="dailySchedule"
+      >
+        <v-card class="card__daily">
+          <v-card-title class="schedule__daily__header">{{ this.selectedDate }}</v-card-title>
+          <v-list class="list__lesson">
+            <div v-if="dailyScheduleInfo==null">
+              <p class="empty__schedule__message">Нет записей</p>
+            </div>
+            <v-list-item
+                v-for="infoItem in dailyScheduleInfo"
+                :key="infoItem.id"
+                :value="infoItem"
+                class="list__item"
+            >
+              <template class="list__template"
+                        @click="openUser(infoItem)">
+                <p class="schedule__item__name">{{ infoItem.firstName + ' ' + infoItem.secondName }}</p>
+                <p class="schedule__item__time">
+                  {{
+                    'Время: ' + new Date(infoItem.lessonStartTime).toLocaleTimeString("ru-RU")
+                    + ' - '
+                    + new Date(infoItem.lessonEndTime).toLocaleTimeString("ru-RU")
+                  }}
+                </p>
+              </template>
+            </v-list-item>
+          </v-list>
+          <v-card-actions>
+            <v-btn color="primary" block @click="closeDailySchedule">Закрыть</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </v-main>
 </template>
@@ -21,22 +54,29 @@ import AppBar from "@/components/AppBar";
 import AppNavigation from "@/components/AppNavigation";
 import VueScheduler from '@glhrm/vue-scheduler';
 import axiosInstance from "@/service/axios.instance";
+import {useAuthenticationStore} from "@/store/authentication.store";
 
 export default {
   name: "SchedulePage",
   components: {AppNavigation, AppBar, VueScheduler},
-  emits: ['selectDate'],
   data() {
     return {
-      events: [
-        {
-          date: new Date(2023, 3, 18),
-          interval: {from: '11:00', to: '12:00'}
-        }
-      ]
+      dailySchedule: false,
+      dailyScheduleInfo: null,
+      selectedDate: null,
+      events: [],
+      authUserId: null,
+    }
+  },
+  setup() {
+    const authenticationStore = useAuthenticationStore()
+
+    return {
+      authenticationStore
     }
   },
   mounted() {
+    this.authUserId = this.authenticationStore.getUserId
     axiosInstance.get('/lesson/plan')
         .then(response => {
           this.events.push(...response.data.map((lesson) => {
@@ -53,12 +93,31 @@ export default {
         })
   },
   methods: {
-    click(data) {
-      console.log(data.date)
+    openDailySchedule(data) {
+      this.dailySchedule = true
+      this.selectedDate = data.date.toLocaleDateString("ru-RU", {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
       axiosInstance.get(`/lessons/${data.date.getFullYear()}/${data.date.getMonth()}/${data.date.getDate()}`)
           .then(response => {
-            console.log(response)
+            this.dailyScheduleInfo = response.data
           })
+
+    },
+    closeDailySchedule() {
+      this.dailySchedule = false
+      this.dailyScheduleInfo = null;
+      this.selectedDate = null;
+    },
+    openUser(infoItem){
+      if(this.authUserId == infoItem.mentorId){
+        this.$router.push(`/user/${infoItem.userId}`)
+      } else if(this.authUserId == infoItem.userId){
+        this.$router.push(`/user/${infoItem.mentorId}`)
+      }
     }
   }
 }

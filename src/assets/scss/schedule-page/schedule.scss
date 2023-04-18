@@ -1,5 +1,29 @@
 @import "../variables";
 
+.schedule__daily__header {
+  font-family: $font-family-title;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: end;
+  color: $font-color-text;
+}
+
+.schedule__item__name {
+  font-family: $font-family-title;
+  font-size: 18px;
+  font-weight: 300;
+  text-align: start;
+  color: $font-color-text;
+}
+
+.schedule__item__time {
+  font-family: $font-family-title;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: start;
+  color: $font-color-text;
+}
+
 .schedule__header{
   font-family: $font-family-title;
   font-weight: 500;
@@ -8,6 +32,12 @@
   margin-right: 20px;
   text-align: end;
   color: $font-color-text;
+}
+
+.empty__schedule__message{
+  font-family: $font-family-title;
+  text-align: center;
+  margin: 10px;
 }
 
 .content {
@@ -28,4 +58,28 @@
 
 .card__schedule::-webkit-scrollbar {
   display: none;
+}
+
+
+.card__daily{
+  margin: 0 auto;
+  max-width: 700px;
+  background: white;
+  border-radius: 35px;
+}
+
+.list__lesson{
+  background: white;
+}
+
+.list__item{
+  margin: 10px;
+  border-radius: 15px;
+}
+
+.list__template{
+  display: flex;
+  flex-direction: column;
+  background: white;
+  margin: 10px;
 }
