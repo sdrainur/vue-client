@@ -75,14 +75,11 @@ export default {
       authenticationStore
     }
   },
-  computed: {
-    // loggingIn() {
-    //   return this.$store.state.authentication.status.loggingIn;
-    // }
+  beforeMount() {
+    if(this.authenticationStore.isLoggedIn){
+      this.$router.push('/user')
+    }
   },
-  // created() {
-  //   this.$store.dispatch('authentication/logout');
-  // },
   methods: {
     signIn() {
       if (this.email && this.password) {

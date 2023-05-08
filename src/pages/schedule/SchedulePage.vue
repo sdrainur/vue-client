@@ -112,10 +112,10 @@ export default {
       this.dailyScheduleInfo = null;
       this.selectedDate = null;
     },
-    openUser(infoItem){
-      if(this.authUserId == infoItem.mentorId){
+    openUser(infoItem) {
+      if (this.authUserId == infoItem.mentorId) {
         this.$router.push(`/user/${infoItem.userId}`)
-      } else if(this.authUserId == infoItem.userId){
+      } else if (this.authUserId == infoItem.userId) {
         this.$router.push(`/user/${infoItem.mentorId}`)
       }
     }

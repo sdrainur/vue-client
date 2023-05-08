@@ -17,6 +17,7 @@
           </div>
           <v-card
               class="content__header shadow btn"
+              color="element"
               v-for="user in users"
               v-bind:key="user"
               @click="$router.push('/user/'+user.id)"

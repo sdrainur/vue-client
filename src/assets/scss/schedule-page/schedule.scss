@@ -8,6 +8,13 @@
   color: $font-color-text;
 }
 
+
+.content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+}
+
 .schedule__item__name {
   font-family: $font-family-title;
   font-size: 18px;
@@ -40,11 +47,6 @@
   margin: 10px;
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  margin: 10px;
-}
 
 .card__schedule {
   height: calc(100vh - 200px);

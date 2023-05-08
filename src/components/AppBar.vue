@@ -1,5 +1,6 @@
 <template>
-  <v-app-bar class="app-bar" style="box-shadow: none;">
+  <v-app-bar class="app-bar" style="box-shadow: none; background: rgb(202,220,255);
+background: linear-gradient(180deg, rgba(202,220,255,1) 9%, rgba(244,244,244,0) 100%);">
     <div class="container">
       <div class="app__bar__inner">
         <p class="title">Meach</p>
@@ -8,7 +9,7 @@
               icon
           >
             <v-avatar size="36px">
-              <v-img :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"/>
+              <v-img :src="require('../assets/images/ava-95.jpg')"/>
             </v-avatar>
             <v-overlay
                 activator="parent"
@@ -25,7 +26,7 @@
                     <v-container style="display: flex; padding: 0; align-items: center; margin-bottom: 10px">
                       <v-avatar size="80px">
                         <v-img
-                            :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"/>
+                            :src="require('../assets/images/ava-95.jpg')"/>
                       </v-avatar>
                       <v-container>
                         <p class="user__name">{{user.firstName + ' ' + user.secondName}}</p>
@@ -38,6 +39,7 @@
                       <v-btn
                           prepend-icon="mdi-cog-outline"
                           class="text__primary button"
+                          @click="$router.push('/settings')"
                       >
                         Настройки
                       </v-btn>
@@ -104,6 +106,9 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Montserrat:wght@500&display=swap');
+
+.app-bar{
+}
 
 .container {
   width: 100%;

@@ -4,7 +4,7 @@
       persistent
   >
     <template v-slot:activator="{ props }">
-      <v-btn class="button" v-bind="props">Новая запись</v-btn>
+      <v-btn class="button" v-bind="props">Записаться на занятие</v-btn>
     </template>
     <div class="new-post" style="height: 500px">
       <v-card class="new-post__inner" style="border-radius: 15px">

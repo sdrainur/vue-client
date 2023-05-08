@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Nunito+Sans&display=swap');
+
+$font-family-title: 'Montserrat', sans-serif;
+$font-family-text: 'Nunito Sans', sans-serif;
+
+.rating__info{
+  display: flex;
+  flex-direction: row;
+}
+
+.rating{
+  transition: 0.1s linear;
+
+  &:hover{
+    scale: 1.1;
+    cursor: pointer;
+  }
+}
+
+.rating__card__container{
+  width: 100%;
+}
+
+.rating__card{
+  margin: 0 auto;
+  max-width: 500px;
+  background: #f8f8f8 !important;
+}
+
+.feedback__list{
+  margin-top: 15px;
+  overflow-y: scroll;
+  max-height: 50vh;
+}
+
+.feedback__item{
+  margin: 5px 0;
+}
+
+.feedback__name{
+  font: $font-family-title;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 5px 0;
+}
+
+.feedback__text{
+  font: $font-family-text;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 5px 0;
+}

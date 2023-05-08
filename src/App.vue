@@ -1,7 +1,9 @@
 <template>
   <div class="app">
     <v-app>
-      <router-view/>
+      <div class="background">
+        <router-view/>
+      </div>
     </v-app>
   </div>
 </template>
@@ -11,4 +13,6 @@ export default {}
 </script>
 
 <style scoped>
+.background {
+}
 </style>

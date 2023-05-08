@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router/dist/vue-router";
-import userPage from "@/pages/UserPage";
+import userPage from "@/pages/user/UserPage";
 import { useAuthenticationStore } from "@/store/authentication.store";
 import usersListPage from "@/pages/UsersListPage";
 import mainPage from "@/pages/MainPage";
 import lessonsPage from "@/pages/LessonsPage";
 import chatPage from "@/pages/ChatPage";
 import schedulePage from "@/pages/schedule/SchedulePage";
+import settingsPage from "@/pages/settings/SettingsPage";
 
 const routes = [
   { path: "/", component: mainPage },
@@ -15,6 +16,7 @@ const routes = [
   { path: "/lessons", component: lessonsPage },
   { path: "/messages", component: chatPage },
   { path: "/schedule", component: schedulePage },
+  { path: "/settings", component: settingsPage },
 ];
 
 const router = createRouter({
