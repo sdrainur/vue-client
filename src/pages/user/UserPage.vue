@@ -404,6 +404,9 @@ export default {
         score: this.newRating.score
       }).then(() => {
         axiosInstance.get(`/feedbacks/${this.user.id}`).then(res => {
+          if(res.status === 200){
+            this.$toast.success('Отзыв добавлен!')
+          }
           this.totalScore = res.data.totalScore;
           this.feedbacks = res.data.feedbacks
         })
@@ -412,6 +415,9 @@ export default {
     deleteFeedback(feedbackId) {
       axiosInstance.delete(`/feedback/${feedbackId}`).then(() => {
         axiosInstance.get(`/feedbacks/${this.user.id}`).then(res => {
+          if(res.status === 200){
+            this.$toast.success('Отзыв удален!')
+          }
           this.totalScore = res.data.totalScore;
           this.feedbacks = res.data.feedbacks;
         })
