@@ -2,10 +2,11 @@
   <v-card
       class="mx-auto title"
       max-width="500"
+      color="element"
   >
     <v-card-title class="text-h6 font-weight-regular justify-space-between">
       <v-row justify="center" align="center">
-        <h2 class="mt-5">Восстановление пароля</h2>
+        <h2 class="mt-5 custom-font">Восстановление пароля</h2>
       </v-row>
     </v-card-title>
 
@@ -134,6 +135,11 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400&display=swap');
+
+.custom-font {
+  font-family: 'Raleway', sans-serif;
+}
 .title {
   font-family: 'Raleway', sans-serif;
 }

@@ -1,9 +1,9 @@
 <template>
-  <v-card>
+  <v-card color="element">
     <v-card-text class="ma-0">
       <v-container class="ma-0">
         <v-row align="center" justify="center" class="ma-0">
-          <h1 class="custom-font" style="margin-bottom: 10px">Вход в аккаунт</h1>
+          <h1 class="custom-font" style="margin-bottom: 15px">Вход в аккаунт</h1>
         </v-row>
         <v-row align="center"
                justify="center"
@@ -24,7 +24,7 @@
                 required
             ></v-text-field>
             <v-row align="center" justify="center">
-              <v-btn class="ma-1" @click="signIn">Войти</v-btn>
+              <v-btn class="ma-1" @click="signIn" color="light_item">Войти</v-btn>
               <v-dialog
                   v-model="resetForm"
                   parent

@@ -6,6 +6,7 @@ $font-family-text: 'Nunito Sans', sans-serif;
 .rating__info{
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 
 .rating{
@@ -19,22 +20,25 @@ $font-family-text: 'Nunito Sans', sans-serif;
 
 .rating__card__container{
   width: 100%;
+  border: none;
+  box-shadow: none;
 }
 
 .rating__card{
   margin: 0 auto;
-  max-width: 500px;
-  background: #f8f8f8 !important;
+  background: rgba(248, 248, 248, 0) !important;
+  border: none;
+  box-shadow: none;
 }
 
 .feedback__list{
   margin-top: 15px;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 50vh;
 }
 
 .feedback__item{
-  margin: 5px 0;
+  margin: 5px 0 20px 0;
 }
 
 .feedback__name{

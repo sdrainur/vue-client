@@ -4,7 +4,7 @@
     <div class="container">
       <app-navigation/>
       <div class="chat">
-        <div class="dialogs shadow">
+        <v-card color="element_lighter" class="dialogs shadow">
           <div class="search">
             <div class="search__inner">
               <v-icon icon="mdi-arrow-left" @click="closeMessages" v-if="openedUser"/>
@@ -17,7 +17,7 @@
               <div class="user" @click="openMessages(user)">
                 <v-avatar size="50px" style="margin: 0 5px">
                   <v-img
-                      :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"/>
+                      :src="require('../assets/images/Profile-Avatar-PNG.png')"/>
                 </v-avatar>
                 {{ user.firstName + ' ' + user.secondName }}
               </div>
@@ -50,13 +50,13 @@
               <v-icon size="30px" icon="mdi-send-circle-outline" @click="sendMessage"/>
             </div>
           </div>
-        </div>
-        <div class="chat__menu shadow">
+        </v-card>
+        <v-card color="element_lighter" class="chat__menu shadow">
           <div class="menu__inner" v-if="openedUser">
             <div class="user__info">
               <v-avatar class="avatar" size="100px">
                 <v-img
-                    :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"
+                    :src="require('../assets/images/Profile-Avatar-PNG.png')"
                 ></v-img>
               </v-avatar>
               <div>
@@ -70,7 +70,7 @@
                 :sender-id="openedUser.id"
                 :opened-user="openedUser"
             />
-            <v-btn variant="text">Видеозвонок</v-btn>
+<!--            <v-btn variant="text">Видеозвонок</v-btn>-->
           </div>
           <div class="menu__inner" v-if="!openedUser">
             <div class="user__info">
@@ -79,7 +79,7 @@
               </p>
             </div>
           </div>
-        </div>
+        </v-card>
       </div>
     </div>
   </v-main>

@@ -15,6 +15,7 @@
     "@glhrm/vue-scheduler": "^1.3.0",
     "@meforma/vue-toaster": "^1.3.0",
     "axios": "^1.3.2",
+    "chart.js": "^4.3.0",
     "chartjs": "^0.3.24",
     "core-js": "^3.8.3",
     "freeice": "^2.2.2",

@@ -16,14 +16,14 @@
     >
       Пользователи
     </v-btn>
-    <v-btn
-        variant="text"
-        class="button"
-        prepend-icon="mdi-school-outline"
-        @click="$router.push('/lessons')"
-    >
-      Обучение
-    </v-btn>
+<!--    <v-btn-->
+<!--        variant="text"-->
+<!--        class="button"-->
+<!--        prepend-icon="mdi-school-outline"-->
+<!--        @click="$router.push('/lessons')"-->
+<!--    >-->
+<!--      Обучение-->
+<!--    </v-btn>-->
     <v-btn
         variant="text"
         class="button"
@@ -54,6 +54,9 @@ export default {
   display: flex;
   flex-direction: column;
   max-width: 250px;
+  position: fixed;
+  z-index: 1;
+  width: 250px;
 }
 
 .button {

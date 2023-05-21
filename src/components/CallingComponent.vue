@@ -10,7 +10,7 @@
             v-bind="props"
             @click="call"
         >
-          Аудиозвонок
+          Звонок
         </v-btn>
       </template>
       <v-card class="call__item" id="callItem">
@@ -22,7 +22,7 @@
             <div class="avatar">
               <v-avatar class="avatar__item" size="7vw">
                 <v-img
-                    :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"></v-img>
+                    :src="require('../assets/images/Profile-Avatar-PNG.png')"></v-img>
               </v-avatar>
             </div>
             <p class="font__name">{{ this.openedUser.firstName + ' ' + this.openedUser.secondName }}</p>
@@ -38,22 +38,22 @@
           >
             <v-icon>mdi-phone-hangup</v-icon>
           </v-btn>
-          <v-btn
-              variant="outlined"
-              icon
-              color="secondary"
-              class="call__button"
-          >
-            <v-icon>mdi-microphone</v-icon>
-          </v-btn>
-          <v-btn
-              variant="outlined"
-              icon
-              color="secondary"
-              class="call__button"
-          >
-            <v-icon>mdi-video</v-icon>
-          </v-btn>
+<!--          <v-btn-->
+<!--              variant="outlined"-->
+<!--              icon-->
+<!--              color="secondary"-->
+<!--              class="call__button"-->
+<!--          >-->
+<!--            <v-icon>mdi-microphone</v-icon>-->
+<!--          </v-btn>-->
+<!--          <v-btn-->
+<!--              variant="outlined"-->
+<!--              icon-->
+<!--              color="secondary"-->
+<!--              class="call__button"-->
+<!--          >-->
+<!--            <v-icon>mdi-video</v-icon>-->
+<!--          </v-btn>-->
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -70,7 +70,7 @@
             <div class="avatar">
               <v-avatar class="avatar__item" size="7vw">
                 <v-img
-                    :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"></v-img>
+                    :src="require('../assets/images/Profile-Avatar-PNG.png')"></v-img>
               </v-avatar>
             </div>
             <p class="font__name">{{ this.openedUser.firstName + ' ' + this.openedUser.secondName }}</p>
@@ -102,7 +102,7 @@
         v-model="connectedCall"
         width="auto"
     >
-      <v-card>
+      <v-card color="element" style="border-radius: 15px">
         <div class="call__videos">
           <video autoplay
                  playsinline
@@ -124,14 +124,14 @@
           >
             <v-icon>mdi-phone-hangup</v-icon>
           </v-btn>
-          <v-btn
-              variant="outlined"
-              icon
-              color="success"
-              class="call__button"
-          >
-            <v-icon>mdi-phone</v-icon>
-          </v-btn>
+<!--          <v-btn-->
+<!--              variant="outlined"-->
+<!--              icon-->
+<!--              color="success"-->
+<!--              class="call__button"-->
+<!--          >-->
+<!--            <v-icon>mdi-phone</v-icon>-->
+<!--          </v-btn>-->
         </v-card-actions>
       </v-card>
     </v-dialog>

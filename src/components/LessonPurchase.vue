@@ -43,7 +43,7 @@
               variant="text"
               @click="buyLesson"
           >
-            Купить занятие
+            Записаться
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -77,11 +77,8 @@ export default {
   computed: {
     availableHours() {
       const selectedDate = new Date(this.date)
-      // console.log(typeof (this.lessonsPlan))
       console.log(this.lessonsPlan)
-      // console.log(new Date(this.date).getDate())
       console.log(new Date(this.date).getFullYear())
-      // let validHours = []
       let hours = []
       this.lessonsPlan.forEach(el => {
         const currentDate = new Date(el.lessonStartTime)
@@ -98,13 +95,6 @@ export default {
           !hours.includes(el)
       )
       console.log(availableHours)
-      // this.lessonsPlan.forEach(el => {
-      //   console.log(new Date(el))
-      // })
-      // dates.forEach(element => {
-      //   validHours.push(new Date(element.lessonStartTime).getHours())
-      // })
-      // console.log(this.lessonsPlan)
       return availableHours
     }
   },

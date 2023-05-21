@@ -25,7 +25,7 @@
             <v-card-item>
               <v-avatar size="70px">
                 <v-img
-                    :src="require('../assets/images/6-sep-2017-beauty-salons-where-are-best-face-peeli-op.jpg.jpg')"
+                    :src="require('../assets/images/Profile-Avatar-PNG.png')"
                 ></v-img>
               </v-avatar>
             </v-card-item>

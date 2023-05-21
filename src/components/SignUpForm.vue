@@ -3,6 +3,7 @@
       class="mx-auto scroll"
       max-width="500"
       max-height="80vh"
+      color="element"
   >
     <v-card-title class="text-h6 font-weight-regular justify-space-between">
       <span>{{ currentTitle }}</span>
@@ -88,7 +89,7 @@
       <v-spacer></v-spacer>
       <v-btn
           v-if="step === 1"
-          color="light-item"
+          color="element"
           variant="flat"
           @click="signUp"
       >

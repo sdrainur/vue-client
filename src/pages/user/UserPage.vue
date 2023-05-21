@@ -3,7 +3,7 @@
   <v-main>
     <div class="container">
       <app-navigation></app-navigation>
-      <div style="width: 100%;">
+      <div style="width: 100%; margin-left: 180px">
         <div class="content">
           <div style="width: 100%;">
             <v-card
@@ -12,7 +12,7 @@
                 color="element"
             >
               <v-img
-                  :src="require('../../assets/images/ava-95.jpg')"
+                  :src="require('../../assets/images/Profile-Avatar-PNG.png')"
                   height="100px"
                   cover
                   style="filter: blur(40px); -webkit-filter: blur(40px);"
@@ -21,7 +21,7 @@
               <div class="content" style="padding: 0 5px">
                 <v-avatar size="10vw">
                   <v-img
-                      :src="require('../../assets/images/ava-95.jpg')"
+                      :src="require('../../assets/images/Profile-Avatar-PNG.png')"
                       cover
                   ></v-img>
                 </v-avatar>
@@ -30,10 +30,6 @@
                       user.firstName + ' ' + user.secondName
                     }}
                   </v-card-title>
-                  <v-card-text class="text__primary info__item">
-                    <v-icon style="margin-right: 5px;">mdi-text-account</v-icon>
-                    <p>{{ userDescription ? userDescription.description : 'Описание отсутствует' }}</p>
-                  </v-card-text>
                   <v-card-text class="text__primary info__item">
                     <v-icon style="margin-right: 5px;">mdi-school-outline</v-icon>
                     <p>
@@ -57,10 +53,18 @@
                     </p>
                   </v-card-text>
                   <v-card-text class="text__primary info__item" style="margin-left: 5px">
-                    <rating-modal-component/>
+                    <!--                    <rating-modal-component/>-->
+                    <p>({{ totalScore }})</p>
+                    <v-rating
+                        v-model="totalScore"
+                        readonly
+                        color="yellow"
+                        size="28"
+                    ></v-rating>
                   </v-card-text>
                 </div>
               </div>
+
               <div>
                 <div class="d-flex flex-column align-center">
                   <v-btn-toggle
@@ -70,27 +74,62 @@
                   >
                     <v-btn variant="outlined" :value="0">Статьи</v-btn>
                     <v-btn variant="outlined" :value="1">Описание</v-btn>
-                    <v-btn variant="outlined" :value="2">Статистика</v-btn>
-                    <v-btn variant="outlined" :value="3">Запись на занятие</v-btn>
+                    <v-btn variant="outlined" :value="2" @click="openChart()">Статистика</v-btn>
+                    <v-btn variant="outlined" :value="3">Отзывы</v-btn>
                   </v-btn-toggle>
                 </div>
                 <v-window
                     v-model="onboarding"
-                    show-arrows="hover"
                 >
                   <v-window-item
                       :value="0"
                   >
                     <v-card
-                        elevation="2"
-                        height="200"
-                        class="d-flex align-center justify-center ma-2"
+                        class="mx-auto"
+                        color="element"
+                        style="margin: 0 10px 10px 10px; padding: 5px; border: none; box-shadow: none"
                     >
-                      <h1
-                          class="text-h2"
-                      >
-                        Статьи
-                      </h1>
+                      <v-container>
+                        <v-row dense>
+                          <v-col cols="12">
+                            <v-card
+                                color="light_item">
+                              <v-card-text>
+                                <v-text-field
+                                    density="compact"
+                                    variant="outlined"
+                                    label="Новая запись"
+                                    append-inner-icon="mdi-send"
+                                    single-line
+                                    hide-details
+                                ></v-text-field>
+                              </v-card-text>
+                            </v-card>
+                          </v-col>
+                        </v-row>
+                        <v-row dense>
+                          <v-col cols="12" v-for="i in [1, 2, 3, 4,4,4,4,4,]" :key="i">
+                            <v-card
+                                color="light_item"
+                                style="margin-top: 10px"
+                            >
+                              <v-card-title class="text-h5">
+                                Unlimited music now
+                              </v-card-title>
+
+                              <v-card-subtitle>Listen to your favorite artists and albums whenever and wherever, online
+                                and offline.
+                              </v-card-subtitle>
+
+                              <v-card-actions>
+                                <v-btn variant="text">
+                                  Listen Now
+                                </v-btn>
+                              </v-card-actions>
+                            </v-card>
+                          </v-col>
+                        </v-row>
+                      </v-container>
                     </v-card>
                   </v-window-item>
                   <v-window-item
@@ -119,15 +158,73 @@
                       :value="3"
                   >
                     <v-card
-                        elevation="2"
-                        height="200"
-                        class="d-flex align-center justify-center ma-2"
-                    >
-                      <h1
-                          class="text-h2"
-                      >
-                        Запись на занятие
-                      </h1>
+                        color="element"
+                        style="border: none; box-shadow: none; padding: 5px; margin: 10px">
+                      <!--                      <rating-modal-component/>-->
+                      <div class="rating__card__container">
+                        <v-card class="rating__card">
+                          <v-card-text>
+                            <div v-if="!getMyFeedback">
+                              <v-card-title>Новый отзыв</v-card-title>
+                              <div class="rating__card__container">
+                                <v-rating
+                                    color="grey"
+                                    active-color="yellow-accent-4"
+                                    hover
+                                    size="30"
+                                    v-model="newRating.score"
+                                ></v-rating>
+                                <v-textarea :value="newRating.text" @input="newRating.text=$event.target.value"
+                                            label="Отзыв">
+                                </v-textarea>
+                                <v-btn style="background: rgba(220,221,249,0.28)" @click="postFeedback">
+                                  Отправить
+                                </v-btn>
+                              </div>
+                            </div>
+                            <div class="feedback__list">
+                              <div class="feedback__item" v-if="getMyFeedback">
+                                <div style="display: flex; justify-content: space-between">
+                                  <p class="feedback__name">Мой отзыв</p>
+                                  <v-btn
+                                      variant="plain"
+                                      @click="deleteFeedback(getMyFeedback.id)">
+                                    <v-icon size="22">mdi-close</v-icon>
+                                  </v-btn>
+                                </div>
+                                <span class="text-grey text-caption me-2">({{ getMyFeedback.score }})</span>
+                                <v-rating
+                                    v-model="getMyFeedback.score"
+                                    color="light-gray"
+                                    active-color="yellow-accent-4"
+                                    half-increments
+                                    readonly
+                                    hover
+                                    size="20"
+                                ></v-rating>
+                                <p class="feedback__text">{{ getMyFeedback.text }}</p>
+                                <hr/>
+                              </div>
+                              <div class="feedback__item" v-for="feedback in getOtherFeedbacks"
+                                   v-bind:key="feedback.id">
+                                <p class="feedback__name">Анонимый пользователь</p>
+                                <span class="text-grey text-caption me-2">({{ feedback.score }})</span>
+                                <v-rating
+                                    v-model="feedback.score"
+                                    color="light-gray"
+                                    active-color="yellow-accent-4"
+                                    half-increments
+                                    readonly
+                                    hover
+                                    size="20"
+                                ></v-rating>
+                                <p class="feedback__text">{{ feedback.text }}</p>
+                                <hr/>
+                              </div>
+                            </div>
+                          </v-card-text>
+                        </v-card>
+                      </div>
                     </v-card>
                   </v-window-item>
                 </v-window>
@@ -150,19 +247,20 @@ import {isProxy, toRaw} from 'vue';
 import {useAuthenticationStore} from "@/store/authentication.store";
 import RatingModalComponent from "@/pages/user/rating-modal/rating-modal-component";
 import Chart from 'chart.js/auto'
+import LessonPurchase from "@/components/LessonPurchase";
 
 export default {
   name: "UserPage",
   components: {
-    RatingModalComponent,
     // LessonPurchase,
+    // RatingModalComponent,
     AppNavigation,
     AppBar
   },
   data() {
     return {
       length: 4,
-      onboarding: 2,
+      onboarding: 0,
       show: false,
       user: {
         firstName: null,
@@ -184,6 +282,43 @@ export default {
       timezone: '',
       lessonsPlan: null,
       authUserId: null,
+      newRating: {
+        score: null,
+        text: null,
+      },
+      totalScore: null,
+      feedbacks: null
+    }
+  },
+  computed: {
+    availableHours() {
+      const selectedDate = new Date(this.date)
+      let hours = []
+      this.lessonsPlan.forEach(el => {
+        const currentDate = new Date(el.lessonStartTime)
+        if (currentDate.getDate() === selectedDate.getDate()
+            && currentDate.getMonth() === selectedDate.getMonth()
+            && currentDate.getFullYear() === selectedDate.getFullYear()) {
+          hours.push(currentDate.getHours())
+        }
+      })
+      const allTimes = [...Array(23).keys()].map(i => i + 1);
+      const availableHours = allTimes.filter(el =>
+          !hours.includes(el)
+      )
+      return availableHours
+    },
+    getMyFeedback() {
+      return this.feedbacks.find(feedback => feedback.authorId == this.authUserId);
+    },
+    getOtherFeedbacks() {
+      return this.feedbacks.map(feedback => {
+        if (Number(feedback.authorId) !== Number(this.authUserId)) {
+          return feedback
+        }
+      }).filter((element) => {
+        return element !== undefined;
+      });
     }
   },
   setup() {
@@ -201,45 +336,88 @@ export default {
         // this.lessonsPlan = result.data.toRaw()
         // console.log(result.data[0])
         this.lessonsPlan = isProxy(result.data) ? toRaw(result.data) : result.data
-        console.log(this.lessonsPlan)
       })
+      console.log(this.user.id)
       axiosInstance.get(`/user-description/${this.user.id}`)
           .then(result => {
             this.userDescription = result.data
           })
+      axiosInstance.get(`/feedbacks/${this.user.id}`).then(res => {
+        this.totalScore = res.data.totalScore;
+        this.feedbacks = res.data.feedbacks
+      })
     })
-  },
-  mounted() {
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-        datasets: [{
-          label: 'Количество проведенных занятий',
-          data: [12, 19, 3, 5, 2, 3, 7, 5, 9, 10, 18, 25],
-          borderWidth: 1,
-          fill: true,
-          borderColor: 'rgb(75, 192, 192)',
-          lineWidth: 1,
-          tension: 0.3
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
   },
   methods: {
     setLessons(data) {
       this.lessonsPlan = data
+    },
+    buyLesson() {
+      axiosInstance
+          .post('/lessons/add-one', {
+            mentorId: this.mentor.id,
+            lessonStartTime: new Date(this.date)
+          }).then(response => {
+        if (response.status === 200) {
+          loadPlan(this.user.role, this.user.id).then(result => {
+            this.$emit('setLessons', result.data)
+          })
+          this.$toast.success('Чел харош')
+          this.newPost = false
+        }
+      }).catch(() => {
+        this.$toast.error('Кринжанул')
+      })
+    },
+    openChart() {
+      setTimeout(() => {
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            datasets: [{
+              label: 'Количество проведенных занятий',
+              data: [12, 19, 3, 5, 2, 3, 7, 5, 9, 10, 18, 25],
+              borderWidth: 1,
+              fill: true,
+              borderColor: 'rgb(75, 192, 192)',
+              lineWidth: 1,
+              tension: 0.3
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }, 250)
+    },
+    postFeedback() {
+      axiosInstance.post('/add-feedback', {
+        mentorId: this.user.id,
+        text: this.newRating.text,
+        score: this.newRating.score
+      }).then(() => {
+        axiosInstance.get(`/feedbacks/${this.user.id}`).then(res => {
+          this.totalScore = res.data.totalScore;
+          this.feedbacks = res.data.feedbacks
+        })
+      })
+    },
+    deleteFeedback(feedbackId) {
+      axiosInstance.delete(`/feedback/${feedbackId}`).then(() => {
+        axiosInstance.get(`/feedbacks/${this.user.id}`).then(res => {
+          this.totalScore = res.data.totalScore;
+          this.feedbacks = res.data.feedbacks;
+        })
+      })
     }
-  }
+  },
 }
 </script>
 
@@ -299,8 +477,9 @@ export default {
 }
 
 .new-post {
+  padding: 0 20px;
   display: flex;
-  justify-content: center;
+  justify-content: start;
 }
 
 .new-post__inner {

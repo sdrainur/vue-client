@@ -9,7 +9,7 @@ background: linear-gradient(180deg, rgba(202,220,255,1) 9%, rgba(244,244,244,0) 
               icon
           >
             <v-avatar size="36px">
-              <v-img :src="require('../assets/images/ava-95.jpg')"/>
+              <v-img :src="require('../assets/images/Profile-Avatar-PNG.png')"/>
             </v-avatar>
             <v-overlay
                 activator="parent"
@@ -26,7 +26,7 @@ background: linear-gradient(180deg, rgba(202,220,255,1) 9%, rgba(244,244,244,0) 
                     <v-container style="display: flex; padding: 0; align-items: center; margin-bottom: 10px">
                       <v-avatar size="80px">
                         <v-img
-                            :src="require('../assets/images/ava-95.jpg')"/>
+                            :src="require('../assets/images/Profile-Avatar-PNG.png')"/>
                       </v-avatar>
                       <v-container>
                         <p class="user__name">{{user.firstName + ' ' + user.secondName}}</p>
