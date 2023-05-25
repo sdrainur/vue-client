@@ -6,10 +6,10 @@
       <div class="content">
         <p class="schedule__header">Расписание</p>
         <v-card class="card__schedule shadow">
-          <VueScheduler
-              :events="events"
-              @select-date="openDailySchedule"
-              class="schedule"/>
+<!--          <VueScheduler-->
+<!--              :events="events"-->
+<!--              @select-date="openDailySchedule"-->
+<!--              class="schedule"/>-->
         </v-card>
       </div>
       <v-dialog
@@ -52,13 +52,14 @@
 <script>
 import AppBar from "@/components/AppBar";
 import AppNavigation from "@/components/AppNavigation";
-import VueScheduler from '@glhrm/vue-scheduler';
+// import VueScheduler from '@glhrm/vue-scheduler';
 import axiosInstance from "@/service/axios.instance";
 import {useAuthenticationStore} from "@/store/authentication.store";
 
 export default {
   name: "SchedulePage",
-  components: {AppNavigation, AppBar, VueScheduler},
+  components: {AppNavigation, AppBar},
+  // components: {AppNavigation, AppBar, VueScheduler},
   data() {
     return {
       dailySchedule: false,

@@ -162,7 +162,7 @@
                         style="border: none; box-shadow: none; padding: 5px; margin: 10px">
                       <!--                      <rating-modal-component/>-->
                       <div class="rating__card__container">
-                        <v-card class="rating__card">
+                        <v-card color="light_item" class="rating__card">
                           <v-card-text>
                             <div v-if="!getMyFeedback">
                               <v-card-title>Новый отзыв</v-card-title>
@@ -245,9 +245,9 @@ import axiosInstance from "@/service/axios.instance";
 import {loadPlan} from "@/service/lessons.service";
 import {isProxy, toRaw} from 'vue';
 import {useAuthenticationStore} from "@/store/authentication.store";
-import RatingModalComponent from "@/pages/user/rating-modal/rating-modal-component";
+// import RatingModalComponent from "@/pages/user/rating-modal/rating-modal-component";
 import Chart from 'chart.js/auto'
-import LessonPurchase from "@/components/LessonPurchase";
+// import LessonPurchase from "@/components/LessonPurchase";
 
 export default {
   name: "UserPage",

@@ -92,7 +92,7 @@ export default {
   },
   data() {
     return {
-      loginForm: false,
+      loginForm: true,
       signUpForm: false,
       headerColor: null,
       headerShadowValue: null

@@ -3,9 +3,29 @@
   <v-main>
     <div class="container">
       <app-navigation/>
-      <div class="settings__content">
-        <p class="settings__header">Настройки профиля</p>
+      <div style="margin-left: 200px" class="settings__content">
+        <p>Настройки профиля</p>
         <v-card class="settings__card shadow">
+          <v-card-title style="display: flex; justify-content: center">
+            <v-avatar size="10vw">
+              <v-img
+                  :src='`http://localhost:4000/public/${profilePhoto}`'
+                  cover
+              ></v-img>
+            </v-avatar>
+            <div style="width: 100%">
+              <v-file-input
+                  v-model="photo"
+                  accept="image/png, image/jpeg, image/bmp"
+                  placeholder="Загрузить фото профиля"
+                  prepend-icon="mdi-camera"
+                  label="Фото профиля"
+              ></v-file-input>
+              <v-btn @click="loadPhoto()" color="success" style="margin-left: 50px">
+                Сохранить
+              </v-btn>
+            </div>
+          </v-card-title>
           <form>
             <v-text-field
                 v-model="user.firstName"
@@ -101,10 +121,20 @@ export default {
         description: null,
         city: null
       },
-      priceRules:[value=>{
+      priceRules: [value => {
         const pattern = /^(\s*|\d+)$/
         return pattern.test(value) || 'Сумма введена неверно.'
-      }]
+      }],
+      photo: null,
+      profilePhoto: null,
+    }
+  },
+  computed: {
+    photoUrl() {
+      return 'data:image/jpeg;base64,' + btoa(
+          new Uint8Array(this.info.image)
+              .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
     }
   },
   setup() {
@@ -118,6 +148,10 @@ export default {
     axiosInstance.get(`/user`)
         .then(result => {
           this.user = result.data
+          axiosInstance.get(`/profile-photo/${result.data.id}`).then(res => {
+            console.log(res)
+            this.profilePhoto = res.data.imageName;
+          })
         })
     axiosInstance.get(`/user-description`)
         .then(result => {
@@ -152,6 +186,21 @@ export default {
             pricePerHour: this.userDescription.pricePerHour,
             description: this.userDescription.description,
             city: this.userDescription.city
+          })
+    },
+    loadPhoto() {
+      if (!this.photo) {
+        return
+      }
+      let formData = new FormData();
+      formData.append('file', this.photo[0])
+      axiosInstance.post('profile-photo', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data boundary=---some-random-string'
+        }
+      })
+          .then(() => {
+            location.reload()
           })
     }
   }
