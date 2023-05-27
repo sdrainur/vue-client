@@ -3,7 +3,7 @@
   <v-main>
     <div class="container">
       <app-navigation/>
-      <div class="chat">
+      <div style="margin-left: 200px" class="chat">
         <v-card color="element_lighter" class="dialogs shadow">
           <div class="search">
             <div class="search__inner">
@@ -40,14 +40,22 @@
               </div>
             </div>
             <div class="message__input">
+              <div v-if="hasLessonNow">
+                <input
+                    class="message__input__field"
+                    placeholder="Введите сообщение"
+                    :value="newMessageText"
+                    @input="newMessageText=$event.target.value"
+                    @submit.prevent="sendMessage"
+                    @keyup.enter="sendMessage">
+                <v-icon size="30px" icon="mdi-send-circle-outline" @click="sendMessage"/>
+              </div>
               <input
+                  v-if="!hasLessonNow"
+                  readonly="readonly"
                   class="message__input__field"
-                  placeholder="Введите сообщение"
-                  :value="newMessageText"
-                  @input="newMessageText=$event.target.value"
-                  @submit.prevent="sendMessage"
-                  @keyup.enter="sendMessage">
-              <v-icon size="30px" icon="mdi-send-circle-outline" @click="sendMessage"/>
+                  placeholder="Отправлять сообщения можно только во время занятия"
+              >
             </div>
           </div>
         </v-card>
@@ -70,7 +78,7 @@
                 :sender-id="openedUser.id"
                 :opened-user="openedUser"
             />
-<!--            <v-btn variant="text">Видеозвонок</v-btn>-->
+            <!--            <v-btn variant="text">Видеозвонок</v-btn>-->
           </div>
           <div class="menu__inner" v-if="!openedUser">
             <div class="user__info">
@@ -94,6 +102,7 @@ import {useAuthenticationStore} from "@/store/authentication.store";
 import CallingComponent from "@/components/CallingComponent";
 import {createSocket, joinSocket, sendMessage} from "@/ws/chat.ws";
 import {authToken} from "@/service/auth.service";
+import axiosInstance from "@/service/axios.instance";
 
 
 export default {
@@ -105,7 +114,8 @@ export default {
       users: null,
       messages: null,
       authUserId: null,
-      newMessageText: null
+      newMessageText: null,
+      hasLessonNow: null
     }
   },
   setup() {
@@ -151,10 +161,14 @@ export default {
       this.newMessageText = ''
     },
     openMessages(user) {
+      console.log(user)
       loadMessages(user.uuid).then(result => {
         this.messages = result.data
         this.openedUser = user
         // listenRtcSocket(this.socket, this.authUserId, user.id)
+      })
+      axiosInstance.get(`/lessons/has-lesson-now/${user.id}`).then(result => {
+        this.hasLessonNow = result.data.hasLessonNow
       })
     },
     closeMessages() {

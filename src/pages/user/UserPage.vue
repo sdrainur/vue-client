@@ -12,7 +12,7 @@
                 color="element"
             >
               <v-img
-                  :src="require('../../assets/images/Profile-Avatar-PNG.png')"
+                  :src='`http://localhost:4000/public/${userDescription.profilePhotoName}`'
                   height="100px"
                   cover
                   style="filter: blur(40px); -webkit-filter: blur(40px);"
@@ -21,7 +21,7 @@
               <div class="content" style="padding: 0 5px">
                 <v-avatar size="10vw">
                   <v-img
-                      :src="require('../../assets/images/Profile-Avatar-PNG.png')"
+                      :src='`http://localhost:4000/public/${userDescription.profilePhotoName}`'
                       cover
                   ></v-img>
                 </v-avatar>
@@ -62,6 +62,9 @@
                         size="28"
                     ></v-rating>
                   </v-card-text>
+                  <v-card-text v-if="user.role==='MENTOR' && user.id !== authUserId">
+                    <LessonPurchase :mentor="user" :lessons-plan="lessonsPlan"/>
+                  </v-card-text>
                 </div>
               </div>
 
@@ -72,9 +75,9 @@
                       style="border-radius: 20px; height: 30px"
                       v-model="onboarding"
                   >
-                    <v-btn variant="outlined" :value="0">Статьи</v-btn>
+<!--                    <v-btn variant="outlined" :value="0">Статьи</v-btn>-->
                     <v-btn variant="outlined" :value="1">Описание</v-btn>
-                    <v-btn variant="outlined" :value="2" @click="openChart()">Статистика</v-btn>
+                    <v-btn v-if="user.role==='MENTOR'" variant="outlined" :value="2" @click="openChart()">Статистика</v-btn>
                     <v-btn variant="outlined" :value="3">Отзывы</v-btn>
                   </v-btn-toggle>
                 </div>
@@ -138,13 +141,18 @@
                     <v-card
                         elevation="2"
                         height="200"
-                        class="d-flex align-center justify-center ma-2"
+                        style="background-color: rgba(255,255,255,0); border: none; box-shadow: none"
+                        class=" ma-2"
                     >
-                      <h1
-                          class="text-h2"
-                      >
-                        Описание
-                      </h1>
+                      <v-card-title class="text__title">Описание</v-card-title>
+                      <v-card-text class="d-flex justify-center text__primary info__item">
+                        <p v-if="!userDescription">
+                          Пользователь не оставил дополнительной информации о себе
+                        </p>
+                        <p v-if="userDescription">
+                          {{ userDescription.description ? userDescription.description : 'Пользователь не оставил дополнительной информации о себе' }}
+                        </p>
+                      </v-card-text>
                     </v-card>
                   </v-window-item>
                   <v-window-item
@@ -247,11 +255,13 @@ import {isProxy, toRaw} from 'vue';
 import {useAuthenticationStore} from "@/store/authentication.store";
 // import RatingModalComponent from "@/pages/user/rating-modal/rating-modal-component";
 import Chart from 'chart.js/auto'
+import LessonPurchase from "@/components/LessonPurchase.vue";
 // import LessonPurchase from "@/components/LessonPurchase";
 
 export default {
   name: "UserPage",
   components: {
+    LessonPurchase,
     // LessonPurchase,
     // RatingModalComponent,
     AppNavigation,
@@ -260,7 +270,7 @@ export default {
   data() {
     return {
       length: 4,
-      onboarding: 0,
+      onboarding: 1,
       show: false,
       user: {
         firstName: null,
@@ -275,7 +285,8 @@ export default {
         studyField: null,
         pricePerHour: null,
         description: null,
-        city: null
+        city: null,
+        profilePhotoName: null,
       },
       newPost: false,
       date: new Date(),
@@ -287,7 +298,8 @@ export default {
         text: null,
       },
       totalScore: null,
-      feedbacks: null
+      feedbacks: null,
+      profilePhoto: null
     }
   },
   computed: {
@@ -337,7 +349,6 @@ export default {
         // console.log(result.data[0])
         this.lessonsPlan = isProxy(result.data) ? toRaw(result.data) : result.data
       })
-      console.log(this.user.id)
       axiosInstance.get(`/user-description/${this.user.id}`)
           .then(result => {
             this.userDescription = result.data
@@ -345,6 +356,11 @@ export default {
       axiosInstance.get(`/feedbacks/${this.user.id}`).then(res => {
         this.totalScore = res.data.totalScore;
         this.feedbacks = res.data.feedbacks
+      })
+      console.log(res.data.id)
+      axiosInstance.get(`/profile-photo/${res.data.id}`).then(photo => {
+        this.profilePhoto = photo.data.imageName;
+        console.log(photo.data.imageName)
       })
     })
   },

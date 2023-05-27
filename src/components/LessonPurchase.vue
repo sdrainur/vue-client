@@ -80,20 +80,22 @@ export default {
       console.log(this.lessonsPlan)
       console.log(new Date(this.date).getFullYear())
       let hours = []
-      this.lessonsPlan.forEach(el => {
-        const currentDate = new Date(el.lessonStartTime)
-        if (currentDate.getDate() === selectedDate.getDate()
-            && currentDate.getMonth() === selectedDate.getMonth()
-            && currentDate.getFullYear() === selectedDate.getFullYear()) {
-          hours.push(currentDate.getHours())
-        }
-      })
+      if (this.lessonsPlan) {
+        this.lessonsPlan.forEach(el => {
+          const currentDate = new Date(el.lessonStartTime)
+          if (currentDate.getDate() === selectedDate.getDate()
+              && currentDate.getMonth() === selectedDate.getMonth()
+              && currentDate.getFullYear() === selectedDate.getFullYear()) {
+            hours.push(currentDate.getHours())
+          }
+        })
+      }
       const allTimes = [...Array(23).keys()].map(i => i + 1);
       console.log(allTimes)
       console.log(hours)
-      const availableHours = allTimes.filter(el =>
+      const availableHours = hours.length ? allTimes.filter(el =>
           !hours.includes(el)
-      )
+      ) : allTimes
       console.log(availableHours)
       return availableHours
     }
@@ -113,7 +115,7 @@ export default {
           this.$toast.success('Чел харош')
           this.newPost = false
         }
-      }).catch(()=>{
+      }).catch(() => {
         this.$toast.error('Кринжанул')
       })
       console.log(new Date(this.date))

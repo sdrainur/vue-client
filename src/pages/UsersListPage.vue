@@ -3,7 +3,7 @@
   <v-main>
     <div class="container">
       <app-navigation></app-navigation>
-      <div style="width: 100%;">
+      <div style="margin-left: 150px; width: 100%;">
         <div class="content">
           <div class="d-flex flex-column align-center">
             <v-btn-toggle

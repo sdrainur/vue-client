@@ -21,9 +21,18 @@
                   prepend-icon="mdi-camera"
                   label="Фото профиля"
               ></v-file-input>
-              <v-btn @click="loadPhoto()" color="success" style="margin-left: 50px">
+              <v-btn @click="loadPhoto()" color="success" style="margin-left: 40px">
                 Сохранить
               </v-btn>
+              <div style="margin-left: 40px">
+                <v-switch
+                    v-model="isMentorAccount"
+                    hide-details
+                    inset
+                    :label="isMentorAccount ? 'Статус ментора включен' : 'Статус ментора выключен' "
+                    @click="changeRole"
+                ></v-switch>
+              </div>
             </div>
           </v-card-title>
           <form>
@@ -72,6 +81,10 @@
                 v-model="userDescription.pricePerHour"
             ></v-text-field>
 
+            <v-select
+                label="Select"
+                :items="categories"
+            ></v-select>
 
             <v-btn
                 class="me-4"
@@ -127,6 +140,8 @@ export default {
       }],
       photo: null,
       profilePhoto: null,
+      isMentorAccount: false,
+      categories: null,
     }
   },
   computed: {
@@ -152,6 +167,7 @@ export default {
             console.log(res)
             this.profilePhoto = res.data.imageName;
           })
+          this.isMentorAccount = result.data.role === 'MENTOR'
         })
     axiosInstance.get(`/user-description`)
         .then(result => {
@@ -159,6 +175,9 @@ export default {
             this.userDescription = result.data
           }
         })
+    axiosInstance.get('/categories').then(result=>{
+      this.categories = result.data.map(d=>d.name)
+    })
   },
   methods: {
     loadData() {
@@ -202,6 +221,16 @@ export default {
           .then(() => {
             location.reload()
           })
+    },
+    changeRole() {
+      const role = this.isMentorAccount ? 'USER' : 'MENTOR'
+      axiosInstance.post(`/change-role/${role}`).then(res => {
+        if (res.status === 200) {
+          this.$toast.success('Статус аккаунта изменен')
+        }
+      }).catch((error)=>{
+        this.$toast.error(error.code)
+      })
     }
   }
 }

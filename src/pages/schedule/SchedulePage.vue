@@ -3,13 +3,42 @@
   <v-main>
     <div class="container">
       <app-navigation></app-navigation>
-      <div class="content">
-        <p class="schedule__header">Расписание</p>
-        <v-card class="card__schedule shadow">
+      <div style="margin-left: 210px; width: 100% " class="content">
+        <v-card class="card__schedule shadow" >
+          <v-card-title class="schedule__header">Расписание</v-card-title>
 <!--          <VueScheduler-->
 <!--              :events="events"-->
 <!--              @select-date="openDailySchedule"-->
 <!--              class="schedule"/>-->
+          <v-table
+              fixed-header
+              height="300px"
+              style="background-color: rgba(235,235,235,0)"
+          >
+            <thead style="background-color: #ebebeb">
+            <tr>
+              <th class="text-left">
+                Дата
+              </th>
+              <th class="text-left">
+                Время
+              </th>
+              <th class="text-left">
+                Ментор
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+                v-for="lesson in events"
+                :key="lesson.mentorId"
+            >
+              <td>{{ lesson.date.toLocaleString('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }}</td>
+              <td>{{ lesson.interval.from + '0 - ' + lesson.interval.to + '0' }}</td>
+              <td>{{ lesson.mentorId  }}</td>
+            </tr>
+            </tbody>
+          </v-table>
         </v-card>
       </div>
       <v-dialog
@@ -80,6 +109,7 @@ export default {
     this.authUserId = this.authenticationStore.getUserId
     axiosInstance.get('/lesson/plan')
         .then(response => {
+          console.log(response)
           this.events.push(...response.data.map((lesson) => {
             const startDate = new Date(lesson.lessonStartTime)
             const endDate = new Date(lesson.lessonEndTime)
@@ -88,7 +118,8 @@ export default {
               interval: {
                 from: `${startDate.getHours()}:${startDate.getMinutes()}`,
                 to: `${endDate.getHours()}:${endDate.getMinutes()}`
-              }
+              },
+              mentorId: lesson.mentorId
             }
           }))
         })
