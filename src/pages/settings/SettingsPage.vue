@@ -82,8 +82,11 @@
             ></v-text-field>
 
             <v-select
-                label="Select"
+                v-model="userDescription.categoryId"
+                label="Категория"
                 :items="categories"
+                item-title="name"
+                item-value="id"
             ></v-select>
 
             <v-btn
@@ -132,7 +135,8 @@ export default {
         studyField: null,
         pricePerHour: null,
         description: null,
-        city: null
+        city: null,
+        categoryId: null
       },
       priceRules: [value => {
         const pattern = /^(\s*|\d+)$/
@@ -142,6 +146,7 @@ export default {
       profilePhoto: null,
       isMentorAccount: false,
       categories: null,
+      selectedCategory: null,
     }
   },
   computed: {
@@ -175,8 +180,10 @@ export default {
             this.userDescription = result.data
           }
         })
-    axiosInstance.get('/categories').then(result=>{
-      this.categories = result.data.map(d=>d.name)
+    axiosInstance.get('/categories').then(result => {
+      // this.categories = result.data.map(d=>d.name)
+      this.categories = result.data
+      // this.userDescription.categoryId = String(this.userDescription.categoryId)
     })
   },
   methods: {
@@ -196,6 +203,7 @@ export default {
       //       firstName: this.user.firstName,
       //       secondName: this.user.secondName,
       //     })
+
       axiosInstance
           .post('/user-description', {
             employment: this.userDescription.employment,
@@ -204,7 +212,8 @@ export default {
             studyField: this.userDescription.studyField,
             pricePerHour: this.userDescription.pricePerHour,
             description: this.userDescription.description,
-            city: this.userDescription.city
+            city: this.userDescription.city,
+            categoryId: this.userDescription.categoryId
           })
     },
     loadPhoto() {
@@ -228,7 +237,7 @@ export default {
         if (res.status === 200) {
           this.$toast.success('Статус аккаунта изменен')
         }
-      }).catch((error)=>{
+      }).catch((error) => {
         this.$toast.error(error.code)
       })
     }

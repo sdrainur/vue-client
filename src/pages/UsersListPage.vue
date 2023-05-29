@@ -11,26 +11,45 @@
                 color="primary"
                 style="border-radius: 20px;"
             >
-              <v-btn variant="outlined" value="mentors" @click="getUsers">Менторы</v-btn>
-              <v-btn variant="outlined" value="users" @click="getUsers">Пользователи</v-btn>
+              <!--              <v-btn variant="outlined" value="mentors" @click="getUsers">Менторы</v-btn>-->
+              <!--              <v-btn variant="outlined" value="users" @click="getUsers">Пользователи</v-btn>-->
+              <v-select :items="categories"></v-select>
+              <v-select prepend-inner-icon="mdi-format-indent-increase"
+                        :items="sorts"
+                        item-title="name"
+                        item-value="id"
+              ></v-select>
             </v-btn-toggle>
           </div>
           <v-card
               class="content__header shadow btn"
               color="element"
-              v-for="user in users"
+              v-for="user in usersInfo"
               v-bind:key="user"
               @click="$router.push('/user/'+user.id)"
           >
-            <v-card-item>
-              <v-avatar size="70px">
-                <v-img
-                    :src="require('../assets/images/Profile-Avatar-PNG.png')"
-                ></v-img>
-              </v-avatar>
-            </v-card-item>
-            <div class="user__info" style="padding: 0 15px">
-              <v-card-text class="user__name">{{ user.firstName + ' ' + user.secondName }}</v-card-text>
+            <div
+                style="width: 100%; display: flex; align-items: center; flex-direction: row; justify-content: space-between">
+              <div style="display: flex; align-items: center; flex-direction: row">
+                <v-card-item>
+                  <v-avatar size="90px">
+                    <v-img
+                        :src='`http://localhost:4000/public/${user.profilePhotoName}`'
+                        cover
+                    ></v-img>
+                  </v-avatar>
+                </v-card-item>
+                <div style="display: flex;">
+                  <v-card-text class="user__name">{{ user.firstName + ' ' + user.secondName }}</v-card-text>
+                </div>
+                <v-card-text class="text__primary">{{ user.categoryname }}</v-card-text>
+              </div>
+              <div style="margin-right: 30px">
+                <v-card-text class="text__primary">
+                  <span>({{ Number(user.score).toFixed(1) }})</span>
+                  <v-rating half-increments color="orange" size="20" v-model="user.score" readonly/>
+                </v-card-text>
+              </div>
             </div>
           </v-card>
         </div>
@@ -44,6 +63,7 @@
 import AppBar from "@/components/AppBar";
 import AppNavigation from "@/components/AppNavigation";
 import {loadUsers} from "@/service/usersList.service";
+import axiosInstance from "@/service/axios.instance";
 
 export default {
   name: "UsersListPage",
@@ -51,17 +71,30 @@ export default {
   data() {
     return {
       users: null,
-      choice: 'mentors'
+      choice: 'mentors',
+      usersInfo: null,
+      categories: null,
+      sorts: [
+        {id: 1, name: 'По умолчанию'},
+        {id: 2, name: 'По возрастанию оценки'},
+        {id: 3, name: 'По убыванию оценки'}
+      ]
     }
   },
   beforeMount() {
+    axiosInstance.get('all-users-info').then(res => {
+      this.usersInfo = res.data
+    })
+    axiosInstance.get('/categories').then(result => {
+      this.categories = result.data
+    })
     loadUsers(this.choice)
         .then(response => {
           this.users = response.data
         })
   },
-  methods:{
-    getUsers(){
+  methods: {
+    getUsers() {
       loadUsers(this.choice)
           .then(response => {
             this.users = response.data
@@ -92,7 +125,6 @@ export default {
 .choose__button {
   transition: 100ms;
 }
-
 
 
 .content {

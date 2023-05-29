@@ -352,6 +352,7 @@ export default {
       axiosInstance.get(`/user-description/${this.user.id}`)
           .then(result => {
             this.userDescription = result.data
+            console.log(result.data)
           })
       axiosInstance.get(`/feedbacks/${this.user.id}`).then(res => {
         this.totalScore = res.data.totalScore;
