@@ -77,8 +77,6 @@ export default {
   computed: {
     availableHours() {
       const selectedDate = new Date(this.date)
-      console.log(this.lessonsPlan)
-      console.log(new Date(this.date).getFullYear())
       let hours = []
       if (this.lessonsPlan) {
         this.lessonsPlan.forEach(el => {

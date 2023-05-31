@@ -31,6 +31,13 @@
   color: $font-color-text;
 }
 
+.text__primary {
+  font-family: $font-color-text;
+  text-align: start;
+  font-size: 18px;
+  font-weight: 200;
+}
+
 .schedule__header{
   font-family: $font-family-title;
   font-weight: 500;

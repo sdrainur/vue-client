@@ -17,7 +17,8 @@
               <div class="user" @click="openMessages(user)">
                 <v-avatar size="50px" style="margin: 0 5px">
                   <v-img
-                      :src="require('../assets/images/Profile-Avatar-PNG.png')"/>
+                      :src='`http://localhost:4000/public/${user.profilePhotoName}`'
+                      cover/>
                 </v-avatar>
                 {{ user.firstName + ' ' + user.secondName }}
               </div>
@@ -64,7 +65,8 @@
             <div class="user__info">
               <v-avatar class="avatar" size="100px">
                 <v-img
-                    :src="require('../assets/images/Profile-Avatar-PNG.png')"
+                    :src='`http://localhost:4000/public/${openedUser.profilePhotoName}`'
+                    cover
                 ></v-img>
               </v-avatar>
               <div>
@@ -72,6 +74,11 @@
               </div>
             </div>
             <v-divider/>
+            <AudioCallingComponent
+                :socket="socket"
+                :auth-user-id="authUserId"
+                :sender-id="openedUser.id"
+                :opened-user="openedUser"/>
             <CallingComponent
                 :socket="socket"
                 :auth-user-id="authUserId"
@@ -103,11 +110,12 @@ import CallingComponent from "@/components/CallingComponent";
 import {createSocket, joinSocket, sendMessage} from "@/ws/chat.ws";
 import {authToken} from "@/service/auth.service";
 import axiosInstance from "@/service/axios.instance";
+import AudioCallingComponent from "@/components/AudioCallingComponent.vue";
 
 
 export default {
   name: "ChatPage",
-  components: {CallingComponent, AppNavigation, AppBar},
+  components: {AudioCallingComponent, CallingComponent, AppNavigation, AppBar},
   data() {
     return {
       openedUser: null,

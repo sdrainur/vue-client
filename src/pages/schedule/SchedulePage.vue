@@ -32,10 +32,12 @@
             <tr
                 v-for="lesson in events"
                 :key="lesson.mentorId"
+                class="text__primary"
+                style="border-bottom: 1px lightgray solid"
             >
               <td>{{ lesson.date.toLocaleString('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }}</td>
               <td>{{ lesson.interval.from + '0 - ' + lesson.interval.to + '0' }}</td>
-              <td>{{ lesson.mentorId  }}</td>
+              <td><a @click="$router.push(`/user/${lesson.mentorId}`)">{{ lesson.firstName + ' ' + lesson.secondName }}</a></td>
             </tr>
             </tbody>
           </v-table>
@@ -119,7 +121,9 @@ export default {
                 from: `${startDate.getHours()}:${startDate.getMinutes()}`,
                 to: `${endDate.getHours()}:${endDate.getMinutes()}`
               },
-              mentorId: lesson.mentorId
+              mentorId: lesson.mentorId,
+              firstName: lesson.firstName,
+              secondName: lesson.secondName,
             }
           }))
         })

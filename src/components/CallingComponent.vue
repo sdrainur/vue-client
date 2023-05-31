@@ -10,7 +10,7 @@
             v-bind="props"
             @click="call"
         >
-          Звонок
+          Видеозвонок
         </v-btn>
       </template>
       <v-card class="call__item" id="callItem">
