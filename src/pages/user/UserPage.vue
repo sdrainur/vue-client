@@ -169,7 +169,7 @@
                         color="element"
                         style="border: none; box-shadow: none; padding: 5px; margin: 10px">
                       <!--                      <rating-modal-component/>-->
-                      <div class="rating__card__container">
+                      <div class="rating__card__container text__primary">
                         <v-card color="light_item" class="rating__card">
                           <v-card-text>
                             <div v-if="!getMyFeedback">
@@ -193,7 +193,7 @@
                             <div class="feedback__list">
                               <div class="feedback__item" v-if="getMyFeedback">
                                 <div style="display: flex; justify-content: space-between">
-                                  <p class="feedback__name">Мой отзыв</p>
+                                  <p class="text__primary" style="font-size: 20px">Мой отзыв</p>
                                   <v-btn
                                       variant="plain"
                                       @click="deleteFeedback(getMyFeedback.id)">
@@ -210,12 +210,12 @@
                                     hover
                                     size="20"
                                 ></v-rating>
-                                <p class="feedback__text">{{ getMyFeedback.text }}</p>
+                                <p class="text__primary">{{ getMyFeedback.text }}</p>
                                 <hr/>
                               </div>
-                              <div class="feedback__item" v-for="feedback in getOtherFeedbacks"
+                              <div class="feedback__item" style="margin-top: 10px" v-for="feedback in getOtherFeedbacks"
                                    v-bind:key="feedback.id">
-                                <p class="feedback__name">Анонимый пользователь</p>
+                                <p class="text__primary" style="font-size: 20px">Анонимый пользователь</p>
                                 <span class="text-grey text-caption me-2">({{ feedback.score }})</span>
                                 <v-rating
                                     v-model="feedback.score"
@@ -226,7 +226,7 @@
                                     hover
                                     size="20"
                                 ></v-rating>
-                                <p class="feedback__text">{{ feedback.text }}</p>
+                                <p class="text__primary">{{ feedback.text }}</p>
                                 <hr/>
                               </div>
                             </div>
@@ -299,7 +299,10 @@ export default {
       },
       totalScore: null,
       feedbacks: null,
-      profilePhoto: null
+      profilePhoto: null,
+      statistic: null,
+      months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль",
+        "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
     }
   },
   computed: {
@@ -363,6 +366,10 @@ export default {
         this.profilePhoto = photo.data.imageName;
         console.log(photo.data.imageName)
       })
+      axiosInstance.get(`/lessons/get-statistic/${this.user.id}`).then(res=>{
+        this.statistic = res.data
+        console.log(res.data)
+      })
     })
   },
   methods: {
@@ -390,13 +397,22 @@ export default {
       setTimeout(() => {
         const ctx = document.getElementById('myChart');
 
+        const availableMonths = []
+        const counts = []
+        console.log(this.statistic)
+        this.statistic.forEach((stat) => {
+            availableMonths.push(stat.month)
+            counts.push(stat.lessonsCount)
+        })
+        console.log(counts)
+        const months = this.months.filter((month, id) => availableMonths.includes(id))
         new Chart(ctx, {
           type: 'line',
           data: {
-            labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            labels: months,
             datasets: [{
               label: 'Количество проведенных занятий',
-              data: [12, 19, 3, 5, 2, 3, 7, 5, 9, 10, 18, 25],
+              data: counts,
               borderWidth: 1,
               fill: true,
               borderColor: 'rgb(75, 192, 192)',

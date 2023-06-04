@@ -85,7 +85,6 @@
                 :sender-id="openedUser.id"
                 :opened-user="openedUser"
             />
-            <!--            <v-btn variant="text">Видеозвонок</v-btn>-->
           </div>
           <div class="menu__inner" v-if="!openedUser">
             <div class="user__info">
@@ -141,7 +140,6 @@ export default {
     this.authUserId = this.authenticationStore.userId
     joinSocket(this.socket, this.authUserId);
     this.socket.on('chat', (data) => {
-      console.log(data)
       if ((data.to === this.openedUser.id && data.from === this.authUserId) ||
           (data.to === this.authUserId && data.from === this.openedUser.id)) {
         this.messages.push(data.message)
@@ -173,7 +171,6 @@ export default {
       loadMessages(user.uuid).then(result => {
         this.messages = result.data
         this.openedUser = user
-        // listenRtcSocket(this.socket, this.authUserId, user.id)
       })
       axiosInstance.get(`/lessons/has-lesson-now/${user.id}`).then(result => {
         this.hasLessonNow = result.data.hasLessonNow

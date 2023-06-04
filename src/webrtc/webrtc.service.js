@@ -94,7 +94,6 @@ export const setRemoteMedia = async (remoteDescription) => {
 
 export const listenRtcSocket = (socket) => {
     socket.on('session_description', async (data) => {
-        // await setLocalMediaStream()
         console.log(data)
         await setRemoteMedia(data)
         console.log(peerConnection)

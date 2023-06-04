@@ -89,6 +89,45 @@
                 item-value="id"
             ></v-select>
 
+            <div style="width: 100%; display: flex; flex-direction: row">
+              <v-date-picker
+                  style="width: 50%; margin-right: 5px"
+                  v-model="userDescription.teachingStartTime"
+                  class="flex-grow"
+                  mode="dateTime"
+                  is24hr
+                  :minute-increment="60"
+                  :validHours="[...Array(23).keys()].map(i => i + 1)"
+              >
+                <template v-slot="{ inputValue, inputEvents }">
+                  <v-text-field
+                      label="Начало периода преподавания"
+                      id="date"
+                      :value="inputValue"
+                      v-on="inputEvents"
+                  />
+                </template>
+              </v-date-picker>
+              <v-date-picker
+                  style="width: 50%; margin-left: 5px"
+                  v-model="userDescription.teachingEndTime"
+                  class="flex-grow"
+                  mode="dateTime"
+                  is24hr
+                  :minute-increment="60"
+                  :validHours="[...Array(23).keys()].map(i => i + 1)"
+              >
+                <template v-slot="{ inputValue, inputEvents }">
+                  <v-text-field
+                      label="Окончание периода преподавания"
+                      id="date"
+                      :value="inputValue"
+                      v-on="inputEvents"
+                  />
+                </template>
+              </v-date-picker>
+            </div>
+
             <v-btn
                 class="me-4"
                 type="success"
@@ -136,7 +175,9 @@ export default {
         pricePerHour: null,
         description: null,
         city: null,
-        categoryId: null
+        categoryId: null,
+        teachingStartTime: null,
+        teachingEndTime: null,
       },
       priceRules: [value => {
         const pattern = /^(\s*|\d+)$/
@@ -147,6 +188,8 @@ export default {
       isMentorAccount: false,
       categories: null,
       selectedCategory: null,
+      startDate: null,
+      endDate: null
     }
   },
   computed: {
@@ -198,12 +241,6 @@ export default {
           })
     },
     save() {
-      // axiosInstance
-      //     .post('/user/name', {
-      //       firstName: this.user.firstName,
-      //       secondName: this.user.secondName,
-      //     })
-
       axiosInstance
           .post('/user-description', {
             employment: this.userDescription.employment,
@@ -213,7 +250,9 @@ export default {
             pricePerHour: this.userDescription.pricePerHour,
             description: this.userDescription.description,
             city: this.userDescription.city,
-            categoryId: this.userDescription.categoryId
+            categoryId: this.userDescription.categoryId,
+            teachingStartTime: this.userDescription.teachingStartTime,
+            teachingEndTime: this.userDescription.teachingEndTime
           })
     },
     loadPhoto() {
@@ -227,9 +266,7 @@ export default {
           'Content-Type': 'multipart/form-data boundary=---some-random-string'
         }
       })
-          .then(() => {
-            location.reload()
-          })
+      location.reload()
     },
     changeRole() {
       const role = this.isMentorAccount ? 'USER' : 'MENTOR'
