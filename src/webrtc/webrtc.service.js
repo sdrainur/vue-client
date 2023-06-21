@@ -45,7 +45,6 @@ export const createPeer = async (_socket, _loggedUserId, _openedUserId) => {
     })
 
     peerConnection.onicecandidate = event => {
-        console.log('ice candidate event')
         if (event.candidate) {
             socket.emit('relay_ice', {
                 to: openedUserId,
@@ -94,15 +93,11 @@ export const setRemoteMedia = async (remoteDescription) => {
 
 export const listenRtcSocket = (socket) => {
     socket.on('session_description', async (data) => {
-        console.log(data)
         await setRemoteMedia(data)
-        console.log(peerConnection)
     })
     socket.on('ice_candidate', async (iceCandidate) => {
-        console.log(peerConnection)
         await peerConnection.addIceCandidate(
             new RTCIceCandidate(iceCandidate)
         )
-        console.log(peerConnection)
     })
 }

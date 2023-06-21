@@ -14,7 +14,7 @@
         prepend-icon="mdi-account-multiple-outline"
         @click="$router.push('/users')"
     >
-      Пользователи
+      Менторы
     </v-btn>
 <!--    <v-btn-->
 <!--        variant="text"-->

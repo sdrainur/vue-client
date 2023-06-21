@@ -22,7 +22,7 @@
                   label="Фото профиля"
               ></v-file-input>
               <v-btn @click="loadPhoto()" color="success" style="margin-left: 40px">
-                Сохранить
+                Загрузить фото
               </v-btn>
               <div style="margin-left: 40px">
                 <v-switch
@@ -91,17 +91,16 @@
 
             <div style="width: 100%; display: flex; flex-direction: row">
               <v-date-picker
-                  style="width: 50%; margin-right: 5px"
-                  v-model="userDescription.teachingStartTime"
+                  style="width: 40%; margin-right: 5px"
+                  v-model="userDescription.teachingStartDate"
                   class="flex-grow"
-                  mode="dateTime"
+                  mode="date"
                   is24hr
                   :minute-increment="60"
                   :validHours="[...Array(23).keys()].map(i => i + 1)"
               >
                 <template v-slot="{ inputValue, inputEvents }">
                   <v-text-field
-                      label="Начало периода преподавания"
                       id="date"
                       :value="inputValue"
                       v-on="inputEvents"
@@ -109,23 +108,27 @@
                 </template>
               </v-date-picker>
               <v-date-picker
-                  style="width: 50%; margin-left: 5px"
-                  v-model="userDescription.teachingEndTime"
+                  style="width: 40%; margin-left: 5px"
+                  v-model="userDescription.teachingEndDate"
                   class="flex-grow"
-                  mode="dateTime"
+                  mode="date"
                   is24hr
                   :minute-increment="60"
                   :validHours="[...Array(23).keys()].map(i => i + 1)"
               >
                 <template v-slot="{ inputValue, inputEvents }">
                   <v-text-field
-                      label="Окончание периода преподавания"
                       id="date"
                       :value="inputValue"
                       v-on="inputEvents"
                   />
                 </template>
               </v-date-picker>
+              <div class="d-flex flex-row" style="width: 20%">
+                <v-select v-model="userDescription.teachingStartHour" :items="[...Array(23).keys()].map(i => i + 1)" style="padding: 0 10px"></v-select>
+                <p style="margin-right: 10px; font-size: 30px">:</p>
+                <v-select v-model="userDescription.teachingEndHour" :items="[...Array(23).keys()].map(i => i + 1)" ></v-select>
+              </div>
             </div>
 
             <v-btn
@@ -176,8 +179,10 @@ export default {
         description: null,
         city: null,
         categoryId: null,
-        teachingStartTime: null,
-        teachingEndTime: null,
+        teachingStartDate: null,
+        teachingEndDate: null,
+        teachingStartHour: null,
+        teachingEndHour: null,
       },
       priceRules: [value => {
         const pattern = /^(\s*|\d+)$/
@@ -190,6 +195,7 @@ export default {
       selectedCategory: null,
       startDate: null,
       endDate: null
+
     }
   },
   computed: {
@@ -241,6 +247,7 @@ export default {
           })
     },
     save() {
+      // console.log(new Date().setTime(this.userDescription.teachingStartTime))
       axiosInstance
           .post('/user-description', {
             employment: this.userDescription.employment,
@@ -251,8 +258,10 @@ export default {
             description: this.userDescription.description,
             city: this.userDescription.city,
             categoryId: this.userDescription.categoryId,
-            teachingStartTime: this.userDescription.teachingStartTime,
-            teachingEndTime: this.userDescription.teachingEndTime
+            teachingStartDate: this.userDescription.teachingStartDate,
+            teachingEndDate: this.userDescription.teachingEndDate,
+            teachingStartHour: this.userDescription.teachingStartHour,
+            teachingEndHour: this.userDescription.teachingEndHour
           })
     },
     loadPhoto() {

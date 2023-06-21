@@ -22,7 +22,8 @@
             <div class="avatar">
               <v-avatar class="avatar__item" size="7vw">
                 <v-img
-                    :src="require('../assets/images/Profile-Avatar-PNG.png')"></v-img>
+                    cover
+                    src='http://localhost:4000/public/1685881842441-week7_1100.jpg'></v-img>
               </v-avatar>
             </div>
             <p class="font__name">{{ this.openedUser.firstName + ' ' + this.openedUser.secondName }}</p>
@@ -70,7 +71,8 @@
             <div class="avatar">
               <v-avatar class="avatar__item" size="7vw">
                 <v-img
-                    :src="require('../assets/images/Profile-Avatar-PNG.png')"></v-img>
+                    cover
+                    src='http://localhost:4000/public/1685881842441-week7_1100.jpg'></v-img>
               </v-avatar>
             </div>
             <p class="font__name">{{ this.openedUser.firstName + ' ' + this.openedUser.secondName }}</p>

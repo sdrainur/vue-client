@@ -62,7 +62,7 @@
                         size="28"
                     ></v-rating>
                   </v-card-text>
-                  <v-card-text v-if="user.role==='MENTOR' && user.id !== authUserId">
+                  <v-card-text >
                     <LessonPurchase :mentor="user" :lessons-plan="lessonsPlan"/>
                   </v-card-text>
                 </div>
@@ -397,22 +397,22 @@ export default {
       setTimeout(() => {
         const ctx = document.getElementById('myChart');
 
-        const availableMonths = []
-        const counts = []
-        console.log(this.statistic)
-        this.statistic.forEach((stat) => {
-            availableMonths.push(stat.month)
-            counts.push(stat.lessonsCount)
-        })
-        console.log(counts)
-        const months = this.months.filter((month, id) => availableMonths.includes(id))
+        // const availableMonths = []
+        // const counts = []
+        // console.log(this.statistic)
+        // this.statistic.forEach((stat) => {
+        //     availableMonths.push(stat.month)
+        //     counts.push(stat.lessonsCount)
+        // })
+        // console.log(counts)
+        // const months = this.months.filter((month, id) => availableMonths.includes(id))
         new Chart(ctx, {
           type: 'line',
           data: {
-            labels: months,
+            labels: this.months,
             datasets: [{
               label: 'Количество проведенных занятий',
-              data: counts,
+              data: [3, 5, 6, 9, 4, 6, 2, 9, 7, 4, 6, 11],
               borderWidth: 1,
               fill: true,
               borderColor: 'rgb(75, 192, 192)',

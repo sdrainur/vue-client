@@ -30,33 +30,45 @@
               <div v-for="message in messages" v-bind:key="message">
                 <div class="message__received" v-if="this.authUserId != message.sender">
                   <div class="message__received__inner">
-                    <p class="message__text">{{ message.textOrFilePath }}</p>
+                    <p class="message__text">{{ message.text }}</p>
                   </div>
                 </div>
                 <div class="message__sent" v-if="this.authUserId == message.sender">
                   <div class="message__sent__inner">
-                    <p class="message__text"> {{ message.textOrFilePath }} </p>
+                    <p class="message__text"> {{ message.text }} </p>
                   </div>
                 </div>
               </div>
             </div>
             <div class="message__input">
-              <div v-if="hasLessonNow">
-                <input
-                    class="message__input__field"
-                    placeholder="Введите сообщение"
-                    :value="newMessageText"
-                    @input="newMessageText=$event.target.value"
-                    @submit.prevent="sendMessage"
-                    @keyup.enter="sendMessage">
-                <v-icon size="30px" icon="mdi-send-circle-outline" @click="sendMessage"/>
+              <div class="d-flex flex-row">
+<!--                <v-file-input-->
+<!--                    id="file-input"-->
+<!--                    v-model="file"-->
+<!--                    variant="solo"-->
+<!--                    style="height: 10px; width: 30px; box-shadow: none;"-->
+<!--                ></v-file-input>-->
+                <div v-if="!file" style="width: 100%">
+                  <input
+                      class="message__input__field"
+                      placeholder="Введите сообщение"
+                      :value="newMessageText"
+                      @input="newMessageText=$event.target.value"
+                      @submit.prevent="sendMessage"
+                      @keyup.enter="sendMessage">
+                  <v-icon size="30px" icon="mdi-send-circle-outline" @click="sendMessage"/>
+                </div>
+                <div v-if="file" style="width: 90%">
+                  <input style="width: 90%" :value="file[0].name" disabled/>
+                  <v-icon size="30px" icon="mdi-send-circle-outline" @click="sendFile"/>
+                </div>
               </div>
-              <input
-                  v-if="!hasLessonNow"
-                  readonly="readonly"
-                  class="message__input__field"
-                  placeholder="Отправлять сообщения можно только во время занятия"
-              >
+              <!--              <input-->
+              <!--                  v-if="!hasLessonNow"-->
+              <!--                  readonly="readonly"-->
+              <!--                  class="message__input__field"-->
+              <!--                  placeholder="Отправлять сообщения можно только во время занятия"-->
+              <!--              >-->
             </div>
           </div>
         </v-card>
@@ -122,7 +134,8 @@ export default {
       messages: null,
       authUserId: null,
       newMessageText: null,
-      hasLessonNow: null
+      hasLessonNow: null,
+      file: null
     }
   },
   setup() {
@@ -190,4 +203,14 @@ export default {
 @import "src/assets/scss/chat_page/dialogs";
 @import "src/assets/scss/chat_page/menu";
 @import "src/assets/scss/chat_page/chat";
+
+
+:deep(.v-input__control) {
+  display: none;
+}
+
+:deep(.v-input__prepend) {
+  padding: 2px;
+}
+
 </style>

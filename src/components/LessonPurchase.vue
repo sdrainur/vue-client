@@ -117,7 +117,7 @@
 
       <v-card-actions>
         <v-btn
-            v-if="step > 1"
+            v-if="step > 1 && step < 3"
             variant="text"
             @click="step--"
         >
@@ -158,7 +158,7 @@ export default {
       newPost: false,
       date: new Date(),
       timezone: '',
-      step: 1
+      step: 3
     }
   },
   computed: {

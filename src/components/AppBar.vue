@@ -46,12 +46,6 @@ background: linear-gradient(180deg, rgba(202,220,255,1) 9%, rgba(244,244,244,0) 
                         Настройки
                       </v-btn>
                       <v-btn
-                          prepend-icon="mdi-help-circle-outline"
-                          class="text__primary button"
-                      >
-                        Помощь
-                      </v-btn>
-                      <v-btn
                           prepend-icon="mdi-logout"
                           class="text__primary button"
                           @click="logout"

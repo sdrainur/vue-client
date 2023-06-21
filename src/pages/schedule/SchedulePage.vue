@@ -12,7 +12,7 @@
 <!--              class="schedule"/>-->
           <v-table
               fixed-header
-              height="300px"
+              height="500px"
               style="background-color: rgba(235,235,235,0)"
           >
             <thead style="background-color: #ebebeb">
@@ -126,6 +126,12 @@ export default {
               secondName: lesson.secondName,
             }
           }))
+          this.events.sort((a, b)=>{
+            if(a.date < b.date) return -1
+            if(a.date > b.date) return 1
+            return 0
+          })
+          console.log(this.events)
         })
   },
   methods: {

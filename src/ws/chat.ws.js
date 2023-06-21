@@ -24,6 +24,18 @@ export const sendMessage = (socket, from, to, uuid, messageText) => {
     })
 }
 
+export const sendFile = (socket, from, to, uuid, file) => {
+    socket.emit('file', {
+        data: {
+            uuid: uuid,
+            file: file,
+        },
+        to: to,
+        from: from
+    })
+}
+
+
 export const joinSocket = (socket, userId) => {
     socket.emit('join', {
         userId: userId
